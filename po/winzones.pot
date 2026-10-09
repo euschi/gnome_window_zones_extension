@@ -1,0 +1,500 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 00:50+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: extension/prefs.js:25
+msgid "Shift"
+msgstr ""
+
+#: extension/prefs.js:25
+msgid "Ctrl"
+msgstr ""
+
+#: extension/prefs.js:26
+msgid "Alt"
+msgstr ""
+
+#: extension/prefs.js:26
+msgid "Super"
+msgstr ""
+
+#: extension/prefs.js:79
+msgid "Left and Right Borders"
+msgstr ""
+
+#: extension/prefs.js:79
+msgid "Maximize horizontally"
+msgstr ""
+
+#: extension/prefs.js:83
+msgid "General"
+msgstr ""
+
+#: extension/prefs.js:84
+msgid "Double Click on the Border"
+msgstr ""
+
+#: extension/prefs.js:85
+msgid "Top and Bottom Borders"
+msgstr ""
+
+#: extension/prefs.js:86
+msgid "Maximize vertically only, like on Windows"
+msgstr ""
+
+#: extension/prefs.js:88
+msgid ""
+"Double click where the resize cursor appears. Drag the window along the "
+"maximized direction to restore it."
+msgstr ""
+
+#: extension/prefs.js:89 extension/prefs.js:126
+msgid "Zones"
+msgstr ""
+
+#: extension/prefs.js:90
+msgid "Show Zones While Dragging"
+msgstr ""
+
+#: extension/prefs.js:91
+msgid "Hold the modifier key while moving a window, then drop it into a zone"
+msgstr ""
+
+#: extension/prefs.js:92
+msgid "Modifier Key"
+msgstr ""
+
+#: extension/prefs.js:93
+msgid "Gap"
+msgstr ""
+
+#: extension/prefs.js:93
+msgid "Space around windows in pixels"
+msgstr ""
+
+#: extension/prefs.js:94
+msgid "Restore Size"
+msgstr ""
+
+#: extension/prefs.js:95
+msgid "A window dragged out of its zone gets back its original size"
+msgstr ""
+
+#: extension/prefs.js:96
+msgid "Snap Assist"
+msgstr ""
+
+#: extension/prefs.js:97
+msgid "After snapping a window, pick the windows for the free zones"
+msgstr ""
+
+#: extension/prefs.js:99
+msgid "Corners"
+msgstr ""
+
+#: extension/prefs.js:100
+msgid "Snap to Quarters"
+msgstr ""
+
+#: extension/prefs.js:101
+msgid "Drag a window to a corner of the screen to fill a quarter of it"
+msgstr ""
+
+#: extension/prefs.js:102
+msgid "Corner Size"
+msgstr ""
+
+#: extension/prefs.js:103
+msgid "Size in pixels of the area that triggers the snap"
+msgstr ""
+
+#: extension/prefs.js:105
+msgid "Top Bar"
+msgstr ""
+
+#: extension/prefs.js:106
+msgid "Show Indicator"
+msgstr ""
+
+#: extension/prefs.js:113
+msgid "Layouts"
+msgstr ""
+
+#: extension/prefs.js:123
+#, javascript-format
+msgid "Move to Zone %d"
+msgstr ""
+
+#: extension/prefs.js:125
+msgid "Shortcuts"
+msgstr ""
+
+#: extension/prefs.js:127
+msgid "Move to the Zone on the Left"
+msgstr ""
+
+#: extension/prefs.js:128
+msgid "Move to the Zone on the Right"
+msgstr ""
+
+#: extension/prefs.js:129
+msgid "Move to the Zone Above"
+msgstr ""
+
+#: extension/prefs.js:130
+msgid "Move to the Zone Below"
+msgstr ""
+
+#: extension/prefs.js:131
+msgid "Arrange All Windows in Zones"
+msgstr ""
+
+#: extension/prefs.js:132
+msgid "Layout Picker"
+msgstr ""
+
+#: extension/prefs.js:134
+msgid "Zone Number"
+msgstr ""
+
+#: extension/prefs.js:135
+msgid "Windows"
+msgstr ""
+
+#: extension/prefs.js:136
+msgid "Always on Top"
+msgstr ""
+
+#: extension/prefs.js:172
+msgid "My Layout"
+msgstr ""
+
+#: extension/prefs.js:178
+#, javascript-format
+msgid "%s (copy)"
+msgstr ""
+
+#: extension/prefs.js:183 extension/prefs.js:234 extension/lib/indicator.js:50
+#: extension/lib/indicator.js:52 extension/lib/layoutPicker.js:130
+msgid "Untitled"
+msgstr ""
+
+#: extension/prefs.js:197
+msgid "Edit"
+msgstr ""
+
+#: extension/prefs.js:199
+msgid "Duplicate"
+msgstr ""
+
+#: extension/prefs.js:200 extension/prefs.js:206
+msgid "Delete"
+msgstr ""
+
+#: extension/prefs.js:202
+#, javascript-format
+msgid "Delete “%s”?"
+msgstr ""
+
+#: extension/prefs.js:203
+msgid "The layout will be removed permanently."
+msgstr ""
+
+#: extension/prefs.js:205 extension/prefs/layoutEditor.js:321
+#: extension/prefs/shortcutRow.js:52
+msgid "Cancel"
+msgstr ""
+
+#: extension/prefs.js:215
+msgid "Duplicate and Edit"
+msgstr ""
+
+#: extension/prefs.js:228
+msgid ""
+"Each monitor remembers the layout chosen from the top bar or the layout "
+"picker. Monitors without a choice use the default layout."
+msgstr ""
+
+#: extension/prefs.js:233
+msgid "Default Layout"
+msgstr ""
+
+#: extension/prefs.js:245
+msgid "Custom Layouts"
+msgstr ""
+
+#: extension/prefs.js:246
+msgid "No custom layouts yet."
+msgstr ""
+
+#: extension/prefs.js:249
+msgid "New Layout"
+msgstr ""
+
+#: extension/prefs.js:257
+msgid "Built-in Layouts"
+msgstr ""
+
+#: extension/lib/indicator.js:19
+msgid "Window Zones"
+msgstr ""
+
+#: extension/lib/indicator.js:47
+#, javascript-format
+msgid "Layout — %s"
+msgstr ""
+
+#: extension/lib/indicator.js:48
+msgid "Layout"
+msgstr ""
+
+#: extension/lib/indicator.js:61
+msgid "Choose Layout and Zone…"
+msgstr ""
+
+#: extension/lib/indicator.js:62
+msgid "Arrange Windows in Zones"
+msgstr ""
+
+#: extension/lib/indicator.js:67
+msgid "Settings"
+msgstr ""
+
+#: extension/lib/layoutModel.js:32
+msgid "Halves"
+msgstr ""
+
+#: extension/lib/layoutModel.js:33
+msgid "Thirds"
+msgstr ""
+
+#: extension/lib/layoutModel.js:34
+msgid "Grid 2×2"
+msgstr ""
+
+#: extension/lib/layoutModel.js:35
+msgid "One Third + Two Thirds"
+msgstr ""
+
+#: extension/lib/layoutModel.js:37
+msgid "Two Thirds + One Third"
+msgstr ""
+
+#: extension/lib/layoutModel.js:39
+msgid "Main + Side Stack"
+msgstr ""
+
+#: extension/lib/layoutModel.js:41
+msgid "Priority"
+msgstr ""
+
+#: extension/lib/layoutModel.js:43
+msgid "Four Columns"
+msgstr ""
+
+#: extension/lib/layoutModel.js:44
+msgid "Grid 3×2"
+msgstr ""
+
+#: extension/lib/layoutPicker.js:67
+#, javascript-format
+msgid "Choose a zone for “%s”"
+msgstr ""
+
+#: extension/lib/layoutPicker.js:68
+msgid "Choose the layout of this monitor"
+msgstr ""
+
+#: extension/lib/snapAssist.js:118
+msgid "Choose a window for this zone"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:313
+msgid "Edit Layout"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:324
+msgid "Save"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:328
+msgid "Undo"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:341
+msgid "Name"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:346
+msgid "Keep Current Zones"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:347
+msgid "Single Zone"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:351
+msgid "Start From"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:352
+msgid "Replaces the current zones"
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:365
+msgid ""
+"Click a zone to split it into columns, Shift+click to split it into rows, "
+"right-click (or Ctrl+click) to merge it with the zone next to it. Drag the "
+"lines between zones to resize them."
+msgstr ""
+
+#: extension/prefs/layoutEditor.js:376
+#, javascript-format
+msgid "%d zone"
+msgid_plural "%d zones"
+msgstr[0] ""
+msgstr[1] ""
+
+#: extension/prefs/shortcutRow.js:22
+msgid "Disabled"
+msgstr ""
+
+#: extension/prefs/shortcutRow.js:29
+msgid "Reset to Default"
+msgstr ""
+
+#: extension/prefs/shortcutRow.js:50
+msgid "Press the new shortcut, Backspace to disable it or Esc to cancel."
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:8
+msgid "Maximize vertically on double click of the top or bottom border"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:12
+msgid "Maximize horizontally on double click of the left or right border"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:18
+msgid "Show zones while dragging a window with the modifier key held"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:28
+msgid "Modifier key that shows the zones while dragging"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:33
+msgid "Space around windows placed in zones (px)"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:37
+msgid "Restore the original size when a snapped window is dragged away"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:41
+msgid "After snapping a window, offer the other windows for the free zones"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:45
+msgid "Snap to a quarter of the screen when a window is dragged to a corner"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:50
+msgid "Size of the corner areas that trigger quarter snapping (px)"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:54
+msgid "Show the indicator in the top bar"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:60
+msgid "Custom layouts (JSON)"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:64
+msgid "Active layout of each monitor (JSON: connector → layout id)"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:68
+msgid "Layout used by monitors that have no layout chosen"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:74
+msgid "Move the window to the zone on the left"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:78
+msgid "Move the window to the zone on the right"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:82
+msgid "Move the window to the zone above"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:86
+msgid "Move the window to the zone below"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:90
+msgid "Move the window to zone 1"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:94
+msgid "Move the window to zone 2"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:98
+msgid "Move the window to zone 3"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:102
+msgid "Move the window to zone 4"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:106
+msgid "Move the window to zone 5"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:110
+msgid "Move the window to zone 6"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:114
+msgid "Move the window to zone 7"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:118
+msgid "Move the window to zone 8"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:122
+msgid "Move the window to zone 9"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:126
+msgid "Show the layout picker"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:130
+msgid "Arrange all windows of the monitor in the zones"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:134
+msgid "Toggle always on top for the focused window"
+msgstr ""
