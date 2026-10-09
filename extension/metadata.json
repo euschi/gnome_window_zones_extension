@@ -1,0 +1,12 @@
+{
+  "uuid": "winzones@euschi.github.io",
+  "name": "Window Zones",
+  "description": "Windows-style window management for GNOME.\n\n* Double click a top or bottom resize border to maximize the window vertically only (left or right border: horizontally)\n* Zone layouts like FancyZones: built-in layouts plus your own, made with a visual editor\n* Hold Shift while dragging a window to drop it into a zone\n* Drag a window to a screen corner to snap it to a quarter\n* Snap Assist: after snapping, pick which window fills the remaining zones\n* Keyboard shortcuts to move windows between zones, a layout picker and an always-on-top toggle",
+  "shell-version": [
+    "51"
+  ],
+  "settings-schema": "org.gnome.shell.extensions.winzones",
+  "gettext-domain": "winzones",
+  "url": "https://github.com/euschi/gnome_window_zones_extension",
+  "version-name": "0.1.0"
+}

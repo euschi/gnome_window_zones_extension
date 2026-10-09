@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="winzones">
+  <schema id="org.gnome.shell.extensions.winzones" path="/org/gnome/shell/extensions/winzones/">
+
+    <!-- Double click on the resize border -->
+    <key name="edge-dblclick-enabled" type="b">
+      <default>true</default>
+      <summary>Maximize vertically on double click of the top or bottom border</summary>
+    </key>
+    <key name="edge-dblclick-horizontal" type="b">
+      <default>true</default>
+      <summary>Maximize horizontally on double click of the left or right border</summary>
+    </key>
+
+    <!-- Zones -->
+    <key name="zones-drag-enabled" type="b">
+      <default>true</default>
+      <summary>Show zones while dragging a window with the modifier key held</summary>
+    </key>
+    <key name="drag-modifier" type="s">
+      <choices>
+        <choice value="shift"/>
+        <choice value="ctrl"/>
+        <choice value="alt"/>
+        <choice value="super"/>
+      </choices>
+      <default>'shift'</default>
+      <summary>Modifier key that shows the zones while dragging</summary>
+    </key>
+    <key name="zone-gap" type="i">
+      <range min="0" max="48"/>
+      <default>8</default>
+      <summary>Space around windows placed in zones (px)</summary>
+    </key>
+    <key name="restore-size-on-drag" type="b">
+      <default>true</default>
+      <summary>Restore the original size when a snapped window is dragged away</summary>
+    </key>
+    <key name="snap-assist-enabled" type="b">
+      <default>true</default>
+      <summary>After snapping a window, offer the other windows for the free zones</summary>
+    </key>
+    <key name="corner-snap-enabled" type="b">
+      <default>true</default>
+      <summary>Snap to a quarter of the screen when a window is dragged to a corner</summary>
+    </key>
+    <key name="corner-size" type="i">
+      <range min="10" max="300"/>
+      <default>80</default>
+      <summary>Size of the corner areas that trigger quarter snapping (px)</summary>
+    </key>
+    <key name="show-indicator" type="b">
+      <default>true</default>
+      <summary>Show the indicator in the top bar</summary>
+    </key>
+
+    <!-- Layouts (JSON) -->
+    <key name="custom-layouts" type="s">
+      <default>'[]'</default>
+      <summary>Custom layouts (JSON)</summary>
+    </key>
+    <key name="active-layouts" type="s">
+      <default>'{}'</default>
+      <summary>Active layout of each monitor (JSON: connector → layout id)</summary>
+    </key>
+    <key name="default-layout" type="s">
+      <default>'halves'</default>
+      <summary>Layout used by monitors that have no layout chosen</summary>
+    </key>
+
+    <!-- Keyboard shortcuts -->
+    <key name="move-zone-left" type="as">
+      <default><![CDATA[['<Super><Control>Left']]]></default>
+      <summary>Move the window to the zone on the left</summary>
+    </key>
+    <key name="move-zone-right" type="as">
+      <default><![CDATA[['<Super><Control>Right']]]></default>
+      <summary>Move the window to the zone on the right</summary>
+    </key>
+    <key name="move-zone-up" type="as">
+      <default><![CDATA[['<Super><Control>Up']]]></default>
+      <summary>Move the window to the zone above</summary>
+    </key>
+    <key name="move-zone-down" type="as">
+      <default><![CDATA[['<Super><Control>Down']]]></default>
+      <summary>Move the window to the zone below</summary>
+    </key>
+    <key name="move-to-zone-1" type="as">
+      <default><![CDATA[['<Super><Control><Alt>1']]]></default>
+      <summary>Move the window to zone 1</summary>
+    </key>
+    <key name="move-to-zone-2" type="as">
+      <default><![CDATA[['<Super><Control><Alt>2']]]></default>
+      <summary>Move the window to zone 2</summary>
+    </key>
+    <key name="move-to-zone-3" type="as">
+      <default><![CDATA[['<Super><Control><Alt>3']]]></default>
+      <summary>Move the window to zone 3</summary>
+    </key>
+    <key name="move-to-zone-4" type="as">
+      <default><![CDATA[['<Super><Control><Alt>4']]]></default>
+      <summary>Move the window to zone 4</summary>
+    </key>
+    <key name="move-to-zone-5" type="as">
+      <default><![CDATA[['<Super><Control><Alt>5']]]></default>
+      <summary>Move the window to zone 5</summary>
+    </key>
+    <key name="move-to-zone-6" type="as">
+      <default><![CDATA[['<Super><Control><Alt>6']]]></default>
+      <summary>Move the window to zone 6</summary>
+    </key>
+    <key name="move-to-zone-7" type="as">
+      <default><![CDATA[['<Super><Control><Alt>7']]]></default>
+      <summary>Move the window to zone 7</summary>
+    </key>
+    <key name="move-to-zone-8" type="as">
+      <default><![CDATA[['<Super><Control><Alt>8']]]></default>
+      <summary>Move the window to zone 8</summary>
+    </key>
+    <key name="move-to-zone-9" type="as">
+      <default><![CDATA[['<Super><Control><Alt>9']]]></default>
+      <summary>Move the window to zone 9</summary>
+    </key>
+    <key name="show-layout-picker" type="as">
+      <default><![CDATA[['<Super>z']]]></default>
+      <summary>Show the layout picker</summary>
+    </key>
+    <key name="apply-layout-all" type="as">
+      <default><![CDATA[['<Super><Control>a']]]></default>
+      <summary>Arrange all windows of the monitor in the zones</summary>
+    </key>
+    <key name="toggle-always-on-top" type="as">
+      <default><![CDATA[['<Super><Control>t']]]></default>
+      <summary>Toggle always on top for the focused window</summary>
+    </key>
+  </schema>
+</schemalist>
