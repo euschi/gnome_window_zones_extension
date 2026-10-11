@@ -49,6 +49,10 @@
       <default>80</default>
       <summary>Size of the corner areas that trigger quarter snapping (px)</summary>
     </key>
+    <key name="window-menu-enabled" type="b">
+      <default>true</default>
+      <summary>Add zones, layouts and window swapping to the window menu</summary>
+    </key>
     <key name="show-indicator" type="b">
       <default>true</default>
       <summary>Show the indicator in the top bar</summary>

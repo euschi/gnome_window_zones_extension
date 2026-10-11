@@ -53,6 +53,11 @@ translation is available (currently: Italian).
   Dropping on the side edges keeps GNOME's usual half tiling.
 - **Restore size:** a window dragged out of its zone gets back its original
   size.
+- **Window menu** (right click on the title bar): a thumbnail of the active
+  layout to send the window to a zone, a *Layout* submenu with every layout
+  (click a zone to switch layout and place the window in one go, click the name
+  to switch layout only) and **Swap with “…”** to exchange position and size
+  with a window placed right next to it.
 - **Always on top:** `Super+Ctrl+T` toggles it for the focused window.
 - **Top bar indicator** with the layout of each monitor and quick actions.
 
@@ -99,7 +104,7 @@ gnome-extensions prefs winzones@euschi.github.io
 
 | Page | What you can change |
 |------|---------------------|
-| General | Double click on top/bottom and left/right borders, zones while dragging, modifier key, gap, restore size, Snap Assist, quarter snapping and corner size, indicator |
+| General | Double click on top/bottom and left/right borders, zones while dragging, modifier key, gap, restore size, Snap Assist, quarter snapping and corner size, window menu items, indicator |
 | Layouts | Default layout, custom layouts (new, edit, duplicate, delete), duplicate a built-in layout to customize it |
 | Shortcuts | Every keyboard shortcut (Backspace in the capture dialog disables it) |
 
@@ -131,6 +136,7 @@ extension/
   lib/layoutPicker.js    layout picker (Super+Z)
   lib/keybindings.js     keyboard shortcuts
   lib/indicator.js       top bar menu
+  lib/windowMenu.js      zones, layouts and swap in the window menu (title bar right click)
   prefs/layoutEditor.js  visual layout editor (Gtk.DrawingArea + Cairo)
   prefs/layoutPreview.js layout thumbnails
   prefs/shortcutRow.js   shortcut capture row

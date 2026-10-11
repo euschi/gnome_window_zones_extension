@@ -102,6 +102,10 @@ export default class WinZonesPreferences extends ExtensionPreferences {
                 spinRow('corner-size', _('Corner Size'), 10, 300, 10,
                     _('Size in pixels of the area that triggers the snap')),
             ]),
+            group(_('Window Menu'), [
+                switchRow('window-menu-enabled', _('Zones and Layouts in the Window Menu'),
+                    _('Right click the title bar to choose a zone or a layout, or to swap two windows side by side')),
+            ]),
             group(_('Top Bar'), [
                 switchRow('show-indicator', _('Show Indicator')),
             ]),

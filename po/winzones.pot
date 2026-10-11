@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-10 00:50+0200\n"
+"POT-Creation-Date: 2026-10-12 00:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgid ""
 "maximized direction to restore it."
 msgstr ""
 
-#: extension/prefs.js:89 extension/prefs.js:126
+#: extension/prefs.js:89 extension/prefs.js:130
 msgid "Zones"
 msgstr ""
 
@@ -125,129 +125,144 @@ msgid "Size in pixels of the area that triggers the snap"
 msgstr ""
 
 #: extension/prefs.js:105
-msgid "Top Bar"
+msgid "Window Menu"
 msgstr ""
 
 #: extension/prefs.js:106
+msgid "Zones and Layouts in the Window Menu"
+msgstr ""
+
+#: extension/prefs.js:107
+msgid ""
+"Right click the title bar to choose a zone or a layout, or to swap two "
+"windows side by side"
+msgstr ""
+
+#: extension/prefs.js:109
+msgid "Top Bar"
+msgstr ""
+
+#: extension/prefs.js:110
 msgid "Show Indicator"
 msgstr ""
 
-#: extension/prefs.js:113
+#: extension/prefs.js:117
 msgid "Layouts"
 msgstr ""
 
-#: extension/prefs.js:123
+#: extension/prefs.js:127
 #, javascript-format
 msgid "Move to Zone %d"
 msgstr ""
 
-#: extension/prefs.js:125
+#: extension/prefs.js:129
 msgid "Shortcuts"
 msgstr ""
 
-#: extension/prefs.js:127
+#: extension/prefs.js:131
 msgid "Move to the Zone on the Left"
 msgstr ""
 
-#: extension/prefs.js:128
+#: extension/prefs.js:132
 msgid "Move to the Zone on the Right"
 msgstr ""
 
-#: extension/prefs.js:129
+#: extension/prefs.js:133
 msgid "Move to the Zone Above"
 msgstr ""
 
-#: extension/prefs.js:130
+#: extension/prefs.js:134
 msgid "Move to the Zone Below"
 msgstr ""
 
-#: extension/prefs.js:131
+#: extension/prefs.js:135
 msgid "Arrange All Windows in Zones"
 msgstr ""
 
-#: extension/prefs.js:132
+#: extension/prefs.js:136
 msgid "Layout Picker"
 msgstr ""
 
-#: extension/prefs.js:134
+#: extension/prefs.js:138
 msgid "Zone Number"
 msgstr ""
 
-#: extension/prefs.js:135
+#: extension/prefs.js:139
 msgid "Windows"
 msgstr ""
 
-#: extension/prefs.js:136
+#: extension/prefs.js:140
 msgid "Always on Top"
 msgstr ""
 
-#: extension/prefs.js:172
+#: extension/prefs.js:176
 msgid "My Layout"
 msgstr ""
 
-#: extension/prefs.js:178
+#: extension/prefs.js:182
 #, javascript-format
 msgid "%s (copy)"
 msgstr ""
 
-#: extension/prefs.js:183 extension/prefs.js:234 extension/lib/indicator.js:50
+#: extension/prefs.js:187 extension/prefs.js:238 extension/lib/indicator.js:50
 #: extension/lib/indicator.js:52 extension/lib/layoutPicker.js:130
+#: extension/lib/windowMenu.js:110 extension/lib/windowMenu.js:122
 msgid "Untitled"
 msgstr ""
 
-#: extension/prefs.js:197
+#: extension/prefs.js:201
 msgid "Edit"
 msgstr ""
 
-#: extension/prefs.js:199
+#: extension/prefs.js:203
 msgid "Duplicate"
 msgstr ""
 
-#: extension/prefs.js:200 extension/prefs.js:206
+#: extension/prefs.js:204 extension/prefs.js:210
 msgid "Delete"
 msgstr ""
 
-#: extension/prefs.js:202
+#: extension/prefs.js:206
 #, javascript-format
 msgid "Delete “%s”?"
 msgstr ""
 
-#: extension/prefs.js:203
+#: extension/prefs.js:207
 msgid "The layout will be removed permanently."
 msgstr ""
 
-#: extension/prefs.js:205 extension/prefs/layoutEditor.js:321
+#: extension/prefs.js:209 extension/prefs/layoutEditor.js:321
 #: extension/prefs/shortcutRow.js:52
 msgid "Cancel"
 msgstr ""
 
-#: extension/prefs.js:215
+#: extension/prefs.js:219
 msgid "Duplicate and Edit"
 msgstr ""
 
-#: extension/prefs.js:228
+#: extension/prefs.js:232
 msgid ""
 "Each monitor remembers the layout chosen from the top bar or the layout "
 "picker. Monitors without a choice use the default layout."
 msgstr ""
 
-#: extension/prefs.js:233
+#: extension/prefs.js:237
 msgid "Default Layout"
 msgstr ""
 
-#: extension/prefs.js:245
+#: extension/prefs.js:249
 msgid "Custom Layouts"
 msgstr ""
 
-#: extension/prefs.js:246
+#: extension/prefs.js:250
 msgid "No custom layouts yet."
 msgstr ""
 
-#: extension/prefs.js:249
+#: extension/prefs.js:253
 msgid "New Layout"
 msgstr ""
 
-#: extension/prefs.js:257
+#: extension/prefs.js:261
 msgid "Built-in Layouts"
 msgstr ""
 
@@ -323,6 +338,20 @@ msgstr ""
 
 #: extension/lib/snapAssist.js:118
 msgid "Choose a window for this zone"
+msgstr ""
+
+#: extension/lib/windowMenu.js:98
+msgid "Move to Zone"
+msgstr ""
+
+#: extension/lib/windowMenu.js:110
+#, javascript-format
+msgid "Layout: %s"
+msgstr ""
+
+#: extension/lib/windowMenu.js:140
+#, javascript-format
+msgid "Swap with “%s”"
 msgstr ""
 
 #: extension/prefs/layoutEditor.js:313
@@ -420,81 +449,85 @@ msgid "Size of the corner areas that trigger quarter snapping (px)"
 msgstr ""
 
 #: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:54
+msgid "Add zones, layouts and window swapping to the window menu"
+msgstr ""
+
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:58
 msgid "Show the indicator in the top bar"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:60
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:64
 msgid "Custom layouts (JSON)"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:64
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:68
 msgid "Active layout of each monitor (JSON: connector → layout id)"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:68
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:72
 msgid "Layout used by monitors that have no layout chosen"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:74
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:78
 msgid "Move the window to the zone on the left"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:78
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:82
 msgid "Move the window to the zone on the right"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:82
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:86
 msgid "Move the window to the zone above"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:86
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:90
 msgid "Move the window to the zone below"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:90
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:94
 msgid "Move the window to zone 1"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:94
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:98
 msgid "Move the window to zone 2"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:98
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:102
 msgid "Move the window to zone 3"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:102
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:106
 msgid "Move the window to zone 4"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:106
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:110
 msgid "Move the window to zone 5"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:110
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:114
 msgid "Move the window to zone 6"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:114
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:118
 msgid "Move the window to zone 7"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:118
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:122
 msgid "Move the window to zone 8"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:122
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:126
 msgid "Move the window to zone 9"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:126
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:130
 msgid "Show the layout picker"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:130
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:134
 msgid "Arrange all windows of the monitor in the zones"
 msgstr ""
 
-#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:134
+#: extension/schemas/org.gnome.shell.extensions.winzones.gschema.xml:138
 msgid "Toggle always on top for the focused window"
 msgstr ""
