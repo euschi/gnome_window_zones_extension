@@ -190,6 +190,18 @@ export class ZoneManager extends Signals.EventEmitter {
         return state;
     }
 
+    // Finestra agganciata ridimensionata insieme alle vicine: resta agganciata
+    // alla stessa zona con la nuova dimensione (e la dimensione originale di
+    // prima). Lo stato va verificato con snapState() prima del ridimensionamento.
+    updateTarget(window, rect) {
+        const state = this._snapped.get(window);
+        if (!state)
+            return;
+        const {x, y, width, height} = rect;
+        state.target = {x, y, width, height};
+        state.placedAt = GLib.get_monotonic_time();
+    }
+
     // Ripristina la dimensione originale mantenendo il puntatore nella stessa
     // posizione relativa della finestra
     restoreSize(window, pointerX, pointerY) {

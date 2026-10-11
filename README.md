@@ -53,6 +53,8 @@ translation is available (currently: Italian).
   Dropping on the side edges keeps GNOME's usual half tiling.
 - **Restore size:** a window dragged out of its zone gets back its original
   size.
+- **Linked resizing:** dragging the border of a window resizes the windows
+  next to it on that side too, keeping the gap between them.
 - **Window menu** (right click on the title bar): a thumbnail of the active
   layout to send the window to a zone, a *Layout* submenu with every layout
   (click a zone to switch layout and place the window in one go, click the name
