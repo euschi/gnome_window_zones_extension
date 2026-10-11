@@ -93,6 +93,8 @@ export default class WinZonesPreferences extends ExtensionPreferences {
                 spinRow('zone-gap', _('Gap'), 0, 48, 2, _('Space around windows in pixels')),
                 switchRow('restore-size-on-drag', _('Restore Size'),
                     _('A window dragged out of its zone gets back its original size')),
+                switchRow('linked-resize-enabled', _('Resize Neighbours Together'),
+                    _('Dragging the border between two windows resizes both')),
                 switchRow('snap-assist-enabled', _('Snap Assist'),
                     _('After snapping a window, pick the windows for the free zones')),
             ]),

@@ -36,6 +36,10 @@
       <default>true</default>
       <summary>Restore the original size when a snapped window is dragged away</summary>
     </key>
+    <key name="linked-resize-enabled" type="b">
+      <default>true</default>
+      <summary>Resize the windows next to a window while resizing it</summary>
+    </key>
     <key name="snap-assist-enabled" type="b">
       <default>true</default>
       <summary>After snapping a window, offer the other windows for the free zones</summary>
