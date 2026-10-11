@@ -10,6 +10,7 @@ import {WinZonesIndicator} from './lib/indicator.js';
 import {Keybindings} from './lib/keybindings.js';
 import {LayoutPicker} from './lib/layoutPicker.js';
 import {SnapAssist} from './lib/snapAssist.js';
+import {WindowMenuItems} from './lib/windowMenu.js';
 import {ZoneManager} from './lib/zoneManager.js';
 
 export default class WinZonesExtension extends Extension {
@@ -25,6 +26,7 @@ export default class WinZonesExtension extends Extension {
         this._edgeDoubleClick = new EdgeDoubleClick(this._settings);
         this._dragSnap = new DragSnap(this._settings, this._zones, onSnapped);
         this._keybindings = new Keybindings(this._settings, this._zones, this._actions);
+        this._windowMenu = new WindowMenuItems(this._settings, this._zones, onSnapped);
 
         this._settings.connectObject('changed::show-indicator',
             () => this._syncIndicator(), this);
@@ -35,13 +37,14 @@ export default class WinZonesExtension extends Extension {
         this._settings.disconnectObject(this);
         this._indicator?.destroy();
         this._indicator = null;
+        this._windowMenu.destroy();
         this._keybindings.destroy();
         this._dragSnap.destroy();
         this._edgeDoubleClick.destroy();
         this._picker.destroy();
         this._snapAssist.destroy();
         this._zones.destroy();
-        this._keybindings = this._dragSnap = this._edgeDoubleClick = null;
+        this._windowMenu = this._keybindings = this._dragSnap = this._edgeDoubleClick = null;
         this._picker = this._snapAssist = this._zones = this._actions = null;
         this._settings = null;
     }

@@ -16,7 +16,8 @@ import {
     BUILTIN_LAYOUTS, allLayouts, parseJsonObject, zonesFromTree,
 } from './layoutModel.js';
 import {
-    frameRectEquals, isTileable, monitorConnectors, overlapArea, rectContains,
+    areAdjacent, frameRectEquals, isTileable, monitorConnectors, overlapArea,
+    rectContains,
 } from './utils.js';
 
 // Su Wayland il client applica la nuova dimensione in modo asincrono: per un
@@ -347,6 +348,36 @@ export class ZoneManager extends Signals.EventEmitter {
         const windows = this.windowsOnMonitor(monitor);
         windows.forEach((window, i) =>
             this.placeInZone(window, monitor, zones[i % zones.length].index));
+    }
+
+    // Finestre dello stesso monitor affiancate alla finestra data (lo spazio
+    // tra le zone non conta)
+    adjacentWindows(window) {
+        if (!isTileable(window))
+            return [];
+        const rect = window.get_frame_rect();
+        const tolerance = this._settings.get_int('zone-gap') + 12;
+        return this.windowsOnMonitor(window.get_monitor())
+            .filter(w => w !== window && areAdjacent(rect, w.get_frame_rect(), tolerance));
+    }
+
+    // Scambia posizione e dimensione di due finestre; chi era in una zona la
+    // passa all'altra
+    swapWindows(a, b) {
+        if (!isTileable(a) || !isTileable(b))
+            return;
+        const placement = window => {
+            const state = this.snapState(window);
+            const {x, y, width, height} = state?.target ?? window.get_frame_rect();
+            return {
+                target: {x, y, width, height},
+                monitor: state?.monitor ?? window.get_monitor(),
+                zone: state?.zone ?? -1,
+            };
+        };
+        const pa = placement(a), pb = placement(b);
+        this.placeInRect(a, pb.target, pb);
+        this.placeInRect(b, pa.target, pa);
     }
 
     toggleAlwaysOnTop(window) {

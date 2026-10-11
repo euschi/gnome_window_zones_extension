@@ -65,3 +65,15 @@ export function overlapArea(a, b) {
     const h = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
     return w > 0 && h > 0 ? w * h : 0;
 }
+
+// Due rettangoli affiancati (o impilati) a meno di `tolerance` pixel l'uno
+// dall'altro e sovrapposti per almeno metà sull'altro asse
+export function areAdjacent(a, b, tolerance) {
+    const overlap = (s1, l1, s2, l2) => Math.min(s1 + l1, s2 + l2) - Math.max(s1, s2);
+    const near = (end, start) => Math.abs(end - start) <= tolerance;
+    if ((near(a.x + a.width, b.x) || near(b.x + b.width, a.x)) &&
+        overlap(a.y, a.height, b.y, b.height) >= Math.min(a.height, b.height) / 2)
+        return true;
+    return (near(a.y + a.height, b.y) || near(b.y + b.height, a.y)) &&
+        overlap(a.x, a.width, b.x, b.width) >= Math.min(a.width, b.width) / 2;
+}

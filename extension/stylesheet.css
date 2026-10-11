@@ -103,3 +103,55 @@
 .winzones-picker-name:focus {
     background-color: rgba(255, 255, 255, 0.14);
 }
+
+/* Menu della finestra (clic destro sulla barra del titolo) */
+.winzones-menu-layout-item {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.winzones-menu-box {
+    spacing: 6px;
+}
+
+.winzones-menu-heading {
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.winzones-menu-layout {
+    spacing: 12px;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.winzones-menu-layout:checked {
+    background-color: st-transparentize(-st-accent-color, 0.8);
+}
+
+.winzones-menu-zone {
+    background-color: rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.winzones-menu-zone:checked {
+    background-color: st-transparentize(-st-accent-color, 0.45);
+}
+
+.winzones-menu-zone:hover,
+.winzones-menu-zone:focus {
+    background-color: -st-accent-color;
+    color: -st-accent-fg-color;
+}
+
+.winzones-menu-layout-name {
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.winzones-menu-layout-name:hover,
+.winzones-menu-layout-name:focus {
+    background-color: rgba(128, 128, 128, 0.25);
+}
