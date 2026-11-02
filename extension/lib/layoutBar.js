@@ -12,7 +12,7 @@ import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-import {zonesFromTree} from './layoutModel.js';
+import {thumbnailRects} from './layoutModel.js';
 import {rectContains} from './utils.js';
 
 const THUMB_WIDTH = 96;
@@ -39,10 +39,6 @@ export class LayoutBar {
         this.hide();
     }
 
-    get visible() {
-        return this._actor !== null;
-    }
-
     get monitor() {
         return this._monitor;
     }
@@ -53,9 +49,6 @@ export class LayoutBar {
         this.hide();
 
         const geometry = Main.layoutManager.monitors[monitor];
-        if (!geometry)
-            return;
-
         const layouts = this._zones.layouts;
         const area = this._zones.workArea(monitor);
         const thumbHeight = Math.round(THUMB_WIDTH * geometry.height / geometry.width);
@@ -97,11 +90,8 @@ export class LayoutBar {
     }
 
     _addZones(cell, layout, thumb) {
-        for (const [index, f] of zonesFromTree(layout.root).entries()) {
-            const zoneX = Math.round(f.x * thumb.width + ZONE_GAP / 2);
-            const zoneY = Math.round(f.y * thumb.height + ZONE_GAP / 2);
-            const width = Math.max(1, Math.round(f.w * thumb.width - ZONE_GAP));
-            const height = Math.max(1, Math.round(f.h * thumb.height - ZONE_GAP));
+        const rects = thumbnailRects(layout.root, thumb.width, thumb.height, ZONE_GAP);
+        for (const [index, {x: zoneX, y: zoneY, width, height}] of rects.entries()) {
             const actor = new St.Widget({
                 style_class: 'winzones-layout-bar-zone',
                 x: THUMB_PADDING + zoneX, y: THUMB_PADDING + zoneY, width, height,

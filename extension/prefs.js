@@ -22,6 +22,14 @@ export default class WinZonesPreferences extends ExtensionPreferences {
         window.set_default_size(680, 760);
         window.set_search_enabled(true);
 
+        const connections = [];
+        const onChanged = (key, callback) =>
+            connections.push(settings.connect(`changed::${key}`, callback));
+        window.connect('close-request', () => {
+            connections.forEach(id => settings.disconnect(id));
+            return false;
+        });
+
         const MODIFIERS = [['shift', _('Shift')], ['ctrl', _('Ctrl')],
             ['alt', _('Alt')], ['super', _('Super')]];
 
@@ -31,7 +39,7 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             return row;
         };
 
-        const spinRow = (key, title, min, max, step = 1, subtitle = null) => {
+        const spinRow = (key, title, min, max, step, subtitle) => {
             const row = new Adw.SpinRow({
                 title, subtitle,
                 adjustment: new Gtk.Adjustment({lower: min, upper: max, step_increment: step}),
@@ -40,9 +48,9 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             return row;
         };
 
-        const comboRow = (key, title, options, subtitle = null) => {
+        const comboRow = (key, title, options) => {
             const row = new Adw.ComboRow({
-                title, subtitle,
+                title,
                 model: Gtk.StringList.new(options.map(o => o[1])),
             });
             const sync = () => {
@@ -52,11 +60,11 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             };
             sync();
             row.connect('notify::selected', () => {
-                const value = options[row.selected]?.[0];
-                if (value && value !== settings.get_string(key))
+                const [value] = options[row.selected];
+                if (value !== settings.get_string(key))
                     settings.set_string(key, value);
             });
-            settings.connect(`changed::${key}`, sync);
+            onChanged(key, sync);
             return row;
         };
 
@@ -70,10 +78,7 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             const p = new Adw.PreferencesPage({title, icon_name: icon});
             groups.forEach(g => p.add(g));
             window.add(p);
-            return p;
         };
-
-        // --- Generale ------------------------------------------------------
 
         const horizontal = switchRow('edge-dblclick-horizontal',
             _('Left and Right Borders'), _('Maximize horizontally'));
@@ -115,15 +120,11 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             ]),
         ]);
 
-        // --- Layout --------------------------------------------------------
-
         const layoutsPage = new Adw.PreferencesPage({
             title: _('Layouts'), icon_name: 'view-grid-symbolic',
         });
         window.add(layoutsPage);
-        this._buildLayoutsPage(window, layoutsPage, settings);
-
-        // --- Scorciatoie ---------------------------------------------------
+        this._buildLayoutsPage(window, layoutsPage, settings, onChanged);
 
         const shortcut = (key, title) => new ShortcutRow(settings, key, title);
         const zoneRows = [];
@@ -146,7 +147,7 @@ export default class WinZonesPreferences extends ExtensionPreferences {
         ]);
     }
 
-    _buildLayoutsPage(window, layoutsPage, settings) {
+    _buildLayoutsPage(window, layoutsPage, settings, onChanged) {
         const groups = [];
 
         const readCustom = () => parseCustomLayouts(settings.get_string('custom-layouts'));
@@ -188,17 +189,16 @@ export default class WinZonesPreferences extends ExtensionPreferences {
         }, saveLayout);
 
         const layoutRow = (layout, custom) => {
-            const row = new Adw.ActionRow({title: _(layout.name) || _('Untitled')});
+            const row = new Adw.ActionRow({title: _(layout.name)});
             row.add_prefix(createPreview(layout.root));
 
-            const button = (icon, tooltip, callback, classes = ['flat']) => {
+            const button = (icon, tooltip, callback) => {
                 const b = new Gtk.Button({
                     icon_name: icon, tooltip_text: tooltip,
-                    valign: Gtk.Align.CENTER, css_classes: classes,
+                    valign: Gtk.Align.CENTER, css_classes: ['flat'],
                 });
                 b.connect('clicked', callback);
                 row.add_suffix(b);
-                return b;
             };
 
             if (custom) {
@@ -239,12 +239,12 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             const ids = layouts.map(l => l.id);
             const defaultRow = new Adw.ComboRow({
                 title: _('Default Layout'),
-                model: Gtk.StringList.new(layouts.map(l => _(l.name) || _('Untitled'))),
+                model: Gtk.StringList.new(layouts.map(l => _(l.name))),
                 selected: Math.max(0, ids.indexOf(settings.get_string('default-layout'))),
             });
             defaultRow.connect('notify::selected', () => {
                 const id = ids[defaultRow.selected];
-                if (id && id !== settings.get_string('default-layout'))
+                if (id !== settings.get_string('default-layout'))
                     settings.set_string('default-layout', id);
             });
             defaultGroup.add(defaultRow);
@@ -271,7 +271,7 @@ export default class WinZonesPreferences extends ExtensionPreferences {
             }
         };
 
-        settings.connect('changed::custom-layouts', rebuild);
+        onChanged('custom-layouts', rebuild);
         rebuild();
     }
 }

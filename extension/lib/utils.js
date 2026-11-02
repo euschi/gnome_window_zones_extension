@@ -8,7 +8,6 @@ import Meta from 'gi://Meta';
 export const GrabOpBits = {
     WINDOW: 1,
     KEYBOARD: 256,
-    UNCONSTRAINED: 1024,
     WEST: 4096,
     EAST: 8192,
     SOUTH: 16384,
@@ -65,6 +64,11 @@ export function rectContains(r, x, y) {
     return x >= r.x && x < r.x + r.width && y >= r.y && y < r.y + r.height;
 }
 
+// Lunghezza del tratto in comune tra due segmenti (negativa se sono separati)
+export function overlap(s1, l1, s2, l2) {
+    return Math.min(s1 + l1, s2 + l2) - Math.max(s1, s2);
+}
+
 export function overlapArea(a, b) {
     const w = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
     const h = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
@@ -74,7 +78,6 @@ export function overlapArea(a, b) {
 // Due rettangoli affiancati (o impilati) a meno di `tolerance` pixel l'uno
 // dall'altro e sovrapposti per almeno metà sull'altro asse
 export function areAdjacent(a, b, tolerance) {
-    const overlap = (s1, l1, s2, l2) => Math.min(s1 + l1, s2 + l2) - Math.max(s1, s2);
     const near = (end, start) => Math.abs(end - start) <= tolerance;
     if ((near(a.x + a.width, b.x) || near(b.x + b.width, a.x)) &&
         overlap(a.y, a.height, b.y, b.height) >= Math.min(a.height, b.height) / 2)

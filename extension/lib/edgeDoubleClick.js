@@ -38,7 +38,7 @@ export class EdgeDoubleClick {
 
         global.display.connectObject(
             'grab-op-begin', (_d, window, op) => this._onGrabBegin(window, op),
-            'grab-op-end', (_d, window, op) => this._onGrabEnd(window, op),
+            'grab-op-end', (_d, window) => this._onGrabEnd(window),
             this);
     }
 
@@ -96,7 +96,7 @@ export class EdgeDoubleClick {
         return flags === Meta.MaximizeFlags.VERTICAL || flags === Meta.MaximizeFlags.HORIZONTAL;
     }
 
-    _onGrabEnd(window, _op) {
+    _onGrabEnd(window) {
         const move = this._move;
         this._move = null;
         if (move && move.window === window)
@@ -181,7 +181,7 @@ export class EdgeDoubleClick {
 
         // Il puntatore resta alla stessa distanza dal bordo superiore (barra
         // del titolo) e nella stessa posizione relativa in orizzontale
-        const relX = move.rect.width ? (move.x - move.rect.x) / move.rect.width : 0.5;
+        const relX = (move.x - move.rect.x) / move.rect.width;
         const area = window.get_work_area_current_monitor();
         const newX = vertical ? current.x : Math.max(area.x, Math.min(
             Math.round(x - relX * saved.width), area.x + area.width - saved.width));

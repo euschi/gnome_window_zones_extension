@@ -12,10 +12,11 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {zonesFromTree} from './layoutModel.js';
+import {thumbnailRects} from './layoutModel.js';
 import {isTileable} from './utils.js';
 
 const THUMB_WIDTH = 176;
+const ZONE_GAP = 3;
 
 export class LayoutPicker {
     constructor(zoneManager, onSnapped) {
@@ -43,8 +44,6 @@ export class LayoutPicker {
         this._monitorIndex = this._window
             ? this._window.get_monitor() : global.display.get_current_monitor();
         const monitor = Main.layoutManager.monitors[this._monitorIndex];
-        if (!monitor)
-            return;
 
         this._actor = new St.Widget({
             style_class: 'winzones-picker-backdrop',
@@ -109,14 +108,10 @@ export class LayoutPicker {
             box.add_style_pseudo_class('checked');
 
         const canvas = new St.Widget({width, height});
-        const gap = 3;
-        for (const [index, f] of zonesFromTree(layout.root).entries()) {
+        for (const [index, rect] of thumbnailRects(layout.root, width, height, ZONE_GAP).entries()) {
             const zone = new St.Button({
                 style_class: 'winzones-picker-zone',
-                x: Math.round(f.x * width + gap / 2),
-                y: Math.round(f.y * height + gap / 2),
-                width: Math.max(1, Math.round(f.w * width - gap)),
-                height: Math.max(1, Math.round(f.h * height - gap)),
+                ...rect,
                 can_focus: true,
                 reactive: !!this._window,
             });
@@ -127,7 +122,7 @@ export class LayoutPicker {
 
         const name = new St.Button({
             style_class: 'winzones-picker-name',
-            label: _(layout.name) || _('Untitled'),
+            label: _(layout.name),
             can_focus: true,
         });
         name.connect('clicked', () => this._choose(layout, -1));

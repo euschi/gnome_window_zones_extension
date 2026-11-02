@@ -1,5 +1,3 @@
-/* Colori dal colore d'accento del sistema (-st-accent-color, GNOME 47+) */
-
 /* Zone mostrate durante il trascinamento */
 .winzones-zone {
     background-color: st-transparentize(-st-accent-color, 0.88);

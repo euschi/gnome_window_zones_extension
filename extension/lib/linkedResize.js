@@ -12,7 +12,7 @@
 
 import GLib from 'gi://GLib';
 
-import {GrabOpBits, frameRectEquals, isTileable} from './utils.js';
+import {GrabOpBits, frameRectEquals, isTileable, overlap} from './utils.js';
 
 // Dimensione minima a cui può essere ridotta una finestra collegata
 const MIN_SIZE = 120;
@@ -43,10 +43,6 @@ function edgeOf(r, side) {
     }
 }
 
-function overlap(s1, l1, s2, l2) {
-    return Math.min(s1 + l1, s2 + l2) - Math.max(s1, s2);
-}
-
 export class LinkedResize {
     constructor(settings, zoneManager) {
         this._settings = settings;
@@ -74,7 +70,7 @@ export class LinkedResize {
         const rect = window.get_frame_rect();
         const tolerance = this._settings.get_int('zone-gap') + 12;
         // Finestre già gestite da Mutter (metà schermo affiancate)
-        const tileMatch = window.get_tile_match?.() ?? null;
+        const tileMatch = window.get_tile_match();
         const others = this._zones.windowsOnMonitor(window.get_monitor())
             .filter(w => w !== window && w !== tileMatch);
 

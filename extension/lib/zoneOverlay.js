@@ -70,8 +70,4 @@ export class ZoneOverlay {
     hide() {
         this._actor.hide();
     }
-
-    get visible() {
-        return this._actor.visible;
-    }
 }

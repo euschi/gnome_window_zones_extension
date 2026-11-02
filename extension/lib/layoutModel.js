@@ -20,7 +20,7 @@ export const MIN_SIZE = 0.05;
 
 export const zone = () => ({zone: true});
 
-export const split = (dir, sizes, children) => ({dir, sizes, children});
+const split = (dir, sizes, children) => ({dir, sizes, children});
 
 const even = n => Array(n).fill(1 / n);
 
@@ -45,7 +45,7 @@ export const BUILTIN_LAYOUTS = [
         root: rows(cols(zone(), zone(), zone()), cols(zone(), zone(), zone()))},
 ];
 
-export const BUILTIN_IDS = new Set(BUILTIN_LAYOUTS.map(l => l.id));
+const BUILTIN_IDS = new Set(BUILTIN_LAYOUTS.map(l => l.id));
 
 // Rettangoli delle zone in frazioni del rettangolo dato (default: tutta l'area)
 export function zonesFromTree(node, rect = {x: 0, y: 0, w: 1, h: 1}, out = []) {
@@ -65,12 +65,22 @@ export function zonesFromTree(node, rect = {x: 0, y: 0, w: 1, h: 1}, out = []) {
     return out;
 }
 
+// Rettangoli in pixel delle zone in una miniatura, con `gap` tra una zona e l'altra
+export function thumbnailRects(root, width, height, gap) {
+    return zonesFromTree(root).map(f => ({
+        x: Math.round(f.x * width + gap / 2),
+        y: Math.round(f.y * height + gap / 2),
+        width: Math.max(1, Math.round(f.w * width - gap)),
+        height: Math.max(1, Math.round(f.h * height - gap)),
+    }));
+}
+
 export function countZones(node) {
     return node.zone ? 1 : node.children.reduce((n, c) => n + countZones(c), 0);
 }
 
 // Normalizza un nodo letto da JSON; restituisce null se non è valido
-export function sanitizeNode(node, depth = 0) {
+function sanitizeNode(node, depth = 0) {
     if (!node || typeof node !== 'object' || depth > 16)
         return null;
     if (node.zone)
@@ -103,7 +113,7 @@ export function parseCustomLayouts(json) {
         const root = sanitizeNode(l?.root);
         if (!root || typeof l.id !== 'string' || BUILTIN_IDS.has(l.id))
             continue;
-        layouts.push({id: l.id, name: String(l.name ?? ''), root});
+        layouts.push({id: l.id, name: String(l.name ?? '') || N_('Untitled'), root});
     }
     return layouts;
 }
