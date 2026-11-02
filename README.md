@@ -49,6 +49,9 @@ translation is available (currently: Italian).
 **Extras**
 - **Snap Assist:** after snapping a window, the free zones show the other
   windows as thumbnails; click one to put it there (Esc to dismiss).
+- **Layout bar:** drag a window to the top of the screen and every layout
+  appears as a thumbnail; drop it on a zone to switch to that layout and place
+  the window there in one go. Dropping elsewhere at the top still maximizes.
 - **Quarter snapping:** drag a window into a screen corner to fill a quarter.
   Dropping on the side edges keeps GNOME's usual half tiling.
 - **Restore size:** a window dragged out of its zone gets back its original
@@ -135,6 +138,7 @@ extension/
   lib/edgeDoubleClick.js double click on the resize border
   lib/dragSnap.js        zones while dragging, quarter snapping, restore size
   lib/zoneOverlay.js     zones drawn over the windows
+  lib/layoutBar.js       layout thumbnails at the top of the screen while dragging
   lib/snapAssist.js      Snap Assist
   lib/layoutPicker.js    layout picker (Super+Z)
   lib/keybindings.js     keyboard shortcuts

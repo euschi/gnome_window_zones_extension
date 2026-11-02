@@ -33,11 +33,16 @@ export const MODIFIER_MASKS = {
     super: Clutter.ModifierType.SUPER_MASK | Clutter.ModifierType.MOD4_MASK,
 };
 
-// Finestre normali che ha senso sistemare nelle zone
+export function isMaximized(window) {
+    return window.get_maximize_flags() === Meta.MaximizeFlags.BOTH;
+}
+
+// Finestre normali che ha senso sistemare nelle zone. Per Mutter una finestra
+// massimizzata non è ridimensionabile, ma lo torna appena smette di esserlo.
 export function isTileable(window) {
     return window && !window.is_skip_taskbar() && !window.minimized &&
         window.get_window_type() === Meta.WindowType.NORMAL &&
-        window.allows_resize() && !window.is_fullscreen();
+        (window.allows_resize() || isMaximized(window)) && !window.is_fullscreen();
 }
 
 // Nome del connettore (es. "DP-1") di ogni indice di monitor, per ricordare il
