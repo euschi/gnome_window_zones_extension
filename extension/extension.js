@@ -4,6 +4,7 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import {ChromeAppMenu} from './lib/chromeAppMenu.js';
 import {DragSnap} from './lib/dragSnap.js';
 import {EdgeDoubleClick} from './lib/edgeDoubleClick.js';
 import {WinZonesIndicator} from './lib/indicator.js';
@@ -29,6 +30,7 @@ export default class WinZonesExtension extends Extension {
         this._linkedResize = new LinkedResize(this._settings, this._zones);
         this._keybindings = new Keybindings(this._settings, this._zones, this._actions);
         this._windowMenu = new WindowMenuItems(this._settings, this._zones, onSnapped);
+        this._chromeAppMenu = new ChromeAppMenu(this._settings);
 
         this._settings.connectObject('changed::show-indicator',
             () => this._syncIndicator(), this);
@@ -39,6 +41,8 @@ export default class WinZonesExtension extends Extension {
         this._settings.disconnectObject(this);
         this._indicator?.destroy();
         this._indicator = null;
+        this._chromeAppMenu.destroy();
+        this._chromeAppMenu = null;
         this._windowMenu.destroy();
         this._keybindings.destroy();
         this._linkedResize.destroy();
