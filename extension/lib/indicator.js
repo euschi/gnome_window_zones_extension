@@ -47,9 +47,9 @@ class WinZonesIndicator extends PanelMenu.Button {
                 ? _('Layout — %s').format(connectors.get(monitor.index) ?? monitor.index + 1)
                 : _('Layout');
             const sub = new PopupMenu.PopupSubMenuMenuItem(
-                `${title}: ${_(active.name) || _('Untitled')}`);
+                `${title}: ${_(active.name)}`);
             for (const layout of this._zones.layouts) {
-                const item = sub.menu.addAction(_(layout.name) || _('Untitled'), () =>
+                const item = sub.menu.addAction(_(layout.name), () =>
                     this._zones.setLayoutForMonitor(monitor.index, layout.id));
                 item.setOrnament(layout.id === active.id
                     ? PopupMenu.Ornament.CHECK : PopupMenu.Ornament.NONE);

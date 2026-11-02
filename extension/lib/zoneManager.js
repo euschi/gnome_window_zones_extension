@@ -10,7 +10,6 @@ import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import * as Signals from 'resource:///org/gnome/shell/misc/signals.js';
 
 import {
     BUILTIN_LAYOUTS, allLayouts, parseJsonObject, zonesFromTree,
@@ -25,17 +24,14 @@ import {
 // messa, ma va considerata agganciata
 const SETTLE_TIME_US = 1500 * 1000;
 
-export class ZoneManager extends Signals.EventEmitter {
+export class ZoneManager {
     constructor(settings) {
-        super();
         this._settings = settings;
         this._snapped = new Map(); // finestra → {monitor, zone, target, orig}
-        this._reloadLayouts();
-        settings.connectObject(
-            'changed::custom-layouts', () => this._reloadLayouts(),
-            'changed::active-layouts', () => this.emit('layouts-changed'),
-            'changed::default-layout', () => this.emit('layouts-changed'),
-            this);
+        this._layouts = allLayouts(settings);
+        settings.connectObject('changed::custom-layouts', () => {
+            this._layouts = allLayouts(settings);
+        }, this);
     }
 
     destroy() {
@@ -45,16 +41,9 @@ export class ZoneManager extends Signals.EventEmitter {
         this._snapped.clear();
     }
 
-    _reloadLayouts() {
-        this._layouts = allLayouts(this._settings);
-        this.emit('layouts-changed');
-    }
-
     get layouts() {
         return this._layouts;
     }
-
-    // --- Layout attivo per monitor -----------------------------------------
 
     layoutForMonitor(monitor) {
         const active = parseJsonObject(this._settings.get_string('active-layouts'));
@@ -71,8 +60,6 @@ export class ZoneManager extends Signals.EventEmitter {
         active[connector] = id;
         this._settings.set_string('active-layouts', JSON.stringify(active));
     }
-
-    // --- Geometria ---------------------------------------------------------
 
     workArea(monitor) {
         return Main.layoutManager.getWorkAreaForMonitor(monitor);
@@ -130,8 +117,6 @@ export class ZoneManager extends Signals.EventEmitter {
         return this.zonesForMonitor(monitor).find(z => rectContains(z.rect, x, y)) ?? null;
     }
 
-    // --- Posizionamento ----------------------------------------------------
-
     placeInZone(window, monitor, zoneIndex) {
         const zone = this.zonesForMonitor(monitor)[zoneIndex];
         if (!zone)
@@ -171,7 +156,6 @@ export class ZoneManager extends Signals.EventEmitter {
         this._snapped.set(window, {
             monitor, zone, target: {...target}, orig, placedAt: GLib.get_monotonic_time(),
         });
-        this.emit('window-placed', window);
     }
 
     forget(window) {
@@ -218,7 +202,7 @@ export class ZoneManager extends Signals.EventEmitter {
         this.forget(window);
 
         const rect = window.get_frame_rect();
-        const relX = rect.width ? (pointerX - rect.x) / rect.width : 0.5;
+        const relX = (pointerX - rect.x) / rect.width;
         const relY = Math.min(pointerY - rect.y, state.orig.height / 2);
         const {width, height} = state.orig;
         const area = this.workArea(window.get_monitor());
@@ -267,8 +251,6 @@ export class ZoneManager extends Signals.EventEmitter {
         }
         return best;
     }
-
-    // --- Azioni ------------------------------------------------------------
 
     moveInDirection(window, direction) {
         if (!isTileable(window))

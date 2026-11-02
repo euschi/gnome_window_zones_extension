@@ -17,11 +17,12 @@ import {
     InjectionManager, gettext as _,
 } from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {zonesFromTree} from './layoutModel.js';
+import {thumbnailRects} from './layoutModel.js';
 import {isTileable} from './utils.js';
 
 const THUMB_WIDTH = 168;
 const SMALL_THUMB_WIDTH = 60;
+const ZONE_GAP = 3;
 const MAX_TITLE_LENGTH = 40;
 
 export class WindowMenuItems {
@@ -35,14 +36,8 @@ export class WindowMenuItems {
         this._injections.overrideMethod(WindowMenu.prototype, '_buildMenu',
             original => function (window) {
                 original.call(this, window);
-                if (!self._settings.get_boolean('window-menu-enabled'))
-                    return;
-                // Un errore qui non deve togliere il menu della finestra
-                try {
+                if (self._settings.get_boolean('window-menu-enabled'))
                     self._addItems(this, window);
-                } catch (e) {
-                    logError(e, 'Window Zones: window menu');
-                }
             });
     }
 
@@ -51,10 +46,10 @@ export class WindowMenuItems {
     }
 
     _addItems(menu, window) {
+        if (!isTileable(window))
+            return;
         const monitor = window.get_monitor();
         const geometry = Main.layoutManager.monitors[monitor];
-        if (!isTileable(window) || !geometry)
-            return;
 
         // Il sottomenu dei layout può essere lungo: limitando l'altezza del
         // menu all'area di lavoro, il sottomenu scorre invece di uscire dallo
@@ -87,7 +82,6 @@ export class WindowMenuItems {
 
         add(new PopupMenu.PopupSeparatorMenuItem());
 
-        // Zone del layout attivo
         const zonesItem = this._containerItem();
         const box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -105,9 +99,8 @@ export class WindowMenuItems {
         zonesItem.setOrnament(PopupMenu.Ornament.NONE);
         add(zonesItem);
 
-        // Tutti i layout
         layoutsItem = new PopupMenu.PopupSubMenuMenuItem(
-            _('Layout: %s').format(_(active.name) || _('Untitled')));
+            _('Layout: %s').format(_(active.name)));
         layoutsItem.setOrnament(PopupMenu.Ornament.NONE);
         for (const layout of this._zones.layouts) {
             const isActive = layout.id === active.id;
@@ -119,7 +112,7 @@ export class WindowMenuItems {
                 isActive ? currentZone : -1, index => place(layout, index)));
             const name = new St.Button({
                 style_class: 'winzones-menu-layout-name',
-                label: _(layout.name) || _('Untitled'),
+                label: _(layout.name),
                 can_focus: true,
                 x_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
@@ -132,7 +125,6 @@ export class WindowMenuItems {
         }
         add(layoutsItem);
 
-        // Scambio con le finestre affiancate
         for (const other of this._zones.adjacentWindows(window)) {
             let title = other.get_title() ?? '';
             if (title.length > MAX_TITLE_LENGTH)
@@ -162,16 +154,12 @@ export class WindowMenuItems {
     // Miniatura del layout in proporzione al monitor; ogni zona è un pulsante
     _thumbnail(layout, geometry, width, numbered, checkedZone, onZone) {
         const height = Math.round(width * geometry.height / geometry.width);
-        const canvas = new St.Widget({width, height, style_class: 'winzones-menu-thumb'});
-        const gap = 3;
-        for (const [index, f] of zonesFromTree(layout.root).entries()) {
+        const canvas = new St.Widget({width, height});
+        for (const [index, rect] of thumbnailRects(layout.root, width, height, ZONE_GAP).entries()) {
             const zone = new St.Button({
                 style_class: 'winzones-menu-zone',
                 label: numbered ? String(index + 1) : '',
-                x: Math.round(f.x * width + gap / 2),
-                y: Math.round(f.y * height + gap / 2),
-                width: Math.max(1, Math.round(f.w * width - gap)),
-                height: Math.max(1, Math.round(f.h * height - gap)),
+                ...rect,
                 can_focus: true,
             });
             if (index === checkedZone)

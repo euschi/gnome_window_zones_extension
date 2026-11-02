@@ -44,16 +44,22 @@ export default class WinZonesExtension extends Extension {
         this._chromeAppMenu.destroy();
         this._chromeAppMenu = null;
         this._windowMenu.destroy();
+        this._windowMenu = null;
         this._keybindings.destroy();
+        this._keybindings = null;
         this._linkedResize.destroy();
-        this._dragSnap.destroy();
-        this._edgeDoubleClick.destroy();
-        this._picker.destroy();
-        this._snapAssist.destroy();
-        this._zones.destroy();
-        this._windowMenu = this._keybindings = this._dragSnap = this._edgeDoubleClick = null;
         this._linkedResize = null;
-        this._picker = this._snapAssist = this._zones = this._actions = null;
+        this._dragSnap.destroy();
+        this._dragSnap = null;
+        this._edgeDoubleClick.destroy();
+        this._edgeDoubleClick = null;
+        this._picker.destroy();
+        this._picker = null;
+        this._snapAssist.destroy();
+        this._snapAssist = null;
+        this._zones.destroy();
+        this._zones = null;
+        this._actions = null;
         this._settings = null;
     }
 

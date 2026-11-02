@@ -82,16 +82,7 @@ export class SnapAssist {
         global.workspace_manager.connectObject('active-workspace-changed',
             () => this.close(), this);
 
-        // Il grab modale solo a interfaccia pronta: un errore non deve lasciare
-        // lo schermo bloccato
-        try {
-            this._showNextZone();
-        } catch (e) {
-            this.close();
-            throw e;
-        }
-        if (!this._actor)
-            return;
+        this._showNextZone();
         this._grab = Main.pushModal(this._actor);
         global.stage.set_key_focus(this._actor);
     }

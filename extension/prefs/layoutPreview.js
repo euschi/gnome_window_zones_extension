@@ -8,13 +8,12 @@ import Gtk from 'gi://Gtk';
 
 import {zonesFromTree} from '../lib/layoutModel.js';
 
+const PREVIEW_WIDTH = 96;
+const PREVIEW_HEIGHT = 54;
+
 export function accentColor() {
-    try {
-        const c = Adw.StyleManager.get_default().get_accent_color_rgba();
-        return [c.red, c.green, c.blue];
-    } catch {
-        return [0.21, 0.52, 0.89];
-    }
+    const c = Adw.StyleManager.get_default().get_accent_color_rgba();
+    return [c.red, c.green, c.blue];
 }
 
 function roundedRect(cr, x, y, w, h, r) {
@@ -28,8 +27,7 @@ function roundedRect(cr, x, y, w, h, r) {
 }
 
 // opts: {gap, radius, numbers, highlight (indice zona)}
-export function drawLayout(cr, width, height, root, opts = {}) {
-    const {gap = 4, radius = 4, numbers = false, highlight = -1} = opts;
+export function drawLayout(cr, width, height, root, {gap, radius, numbers = false, highlight = -1}) {
     const [r, g, b] = accentColor();
     const dark = Adw.StyleManager.get_default().dark;
 
@@ -59,10 +57,10 @@ export function drawLayout(cr, width, height, root, opts = {}) {
     });
 }
 
-export function createPreview(root, width = 96, height = 54) {
+export function createPreview(root) {
     const area = new Gtk.DrawingArea({
-        content_width: width,
-        content_height: height,
+        content_width: PREVIEW_WIDTH,
+        content_height: PREVIEW_HEIGHT,
         valign: Gtk.Align.CENTER,
     });
     area.set_draw_func((_a, cr, w, h) => {
