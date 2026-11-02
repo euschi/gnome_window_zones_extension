@@ -104,6 +104,30 @@
     background-color: rgba(255, 255, 255, 0.14);
 }
 
+/* Barra dei layout durante il trascinamento */
+.winzones-layout-bar {
+    background-color: rgba(36, 36, 36, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.winzones-layout-bar-thumb {
+    border-radius: 8px;
+}
+
+.winzones-layout-bar-thumb:checked {
+    background-color: st-transparentize(-st-accent-color, 0.75);
+}
+
+.winzones-layout-bar-zone {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-radius: 3px;
+}
+
+.winzones-layout-bar-zone:active {
+    background-color: -st-accent-color;
+}
+
 /* Menu della finestra (clic destro sulla barra del titolo) */
 .winzones-menu-layout-item {
     padding-top: 2px;

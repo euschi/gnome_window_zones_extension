@@ -17,6 +17,10 @@
       <default>true</default>
       <summary>Show zones while dragging a window with the modifier key held</summary>
     </key>
+    <key name="drag-layout-bar-enabled" type="b">
+      <default>true</default>
+      <summary>Show every layout at the top of the screen while dragging a window</summary>
+    </key>
     <key name="drag-modifier" type="s">
       <choices>
         <choice value="shift"/>
