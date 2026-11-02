@@ -59,7 +59,8 @@ translation is available (currently: Italian).
   layout to send the window to a zone, a *Layout* submenu with every layout
   (click a zone to switch layout and place the window in one go, click the name
   to switch layout only) and **Swap with “…”** to exchange position and size
-  with a window placed right next to it.
+  with a window placed right next to it. On Chrome PWAs it replaces Chrome's
+  title bar menu; Shift + right click still opens Chrome's.
 - **Always on top:** `Super+Ctrl+T` toggles it for the focused window.
 - **Top bar indicator** with the layout of each monitor and quick actions.
 
@@ -139,6 +140,7 @@ extension/
   lib/keybindings.js     keyboard shortcuts
   lib/indicator.js       top bar menu
   lib/windowMenu.js      zones, layouts and swap in the window menu (title bar right click)
+  lib/chromeAppMenu.js   window menu on the title bar of Chrome PWAs instead of Chrome's own
   prefs/layoutEditor.js  visual layout editor (Gtk.DrawingArea + Cairo)
   prefs/layoutPreview.js layout thumbnails
   prefs/shortcutRow.js   shortcut capture row
