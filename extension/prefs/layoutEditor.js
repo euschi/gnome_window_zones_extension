@@ -7,6 +7,7 @@
 // - clic destro o Ctrl+clic: la unisce alla zona vicina;
 // - trascinando le linee tra le zone si cambiano le proporzioni.
 
+import Cairo from 'cairo';
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';
 import GObject from 'gi://GObject';
@@ -22,8 +23,6 @@ import {accentColor, drawLayout} from './layoutPreview.js';
 const DIVIDER_HIT = 7;
 const CLICK_THRESHOLD = 4;
 const MAX_ZONES = 16;
-
-// --- Operazioni sull'albero -----------------------------------------------
 
 function nodeAt(root, path) {
     return path.reduce((node, i) => node.children[i], root);
@@ -81,8 +80,6 @@ function geometry(root, width, height) {
     return {leaves, dividers};
 }
 
-// --- Widget del canvas ----------------------------------------------------
-
 const LayoutCanvas = GObject.registerClass({
     Signals: {'changed': {}},
 }, class LayoutCanvas extends Gtk.DrawingArea {
@@ -107,9 +104,9 @@ const LayoutCanvas = GObject.registerClass({
         this.add_controller(motion);
 
         const drag = new Gtk.GestureDrag({button: 0});
-        drag.connect('drag-begin', (g, x, y) => this._onDragBegin(g, x, y));
-        drag.connect('drag-update', (g, dx, dy) => this._onDragUpdate(dx, dy));
-        drag.connect('drag-end', (g, dx, dy) => this._onDragEnd(g, dx, dy));
+        drag.connect('drag-begin', (_g, x, y) => this._onDragBegin(x, y));
+        drag.connect('drag-update', (_g, dx, dy) => this._onDragUpdate(dx, dy));
+        drag.connect('drag-end', g => this._onDragEnd(g));
         this.add_controller(drag);
     }
 
@@ -179,7 +176,7 @@ const LayoutCanvas = GObject.registerClass({
         }
     }
 
-    _onDragBegin(_gesture, x, y) {
+    _onDragBegin(x, y) {
         this.grab_focus();
         const divider = this._dividerAt(x, y);
         this._drag = {x, y, divider, moved: false};
@@ -211,7 +208,7 @@ const LayoutCanvas = GObject.registerClass({
         this.queue_draw();
     }
 
-    _onDragEnd(gesture, _dx, _dy) {
+    _onDragEnd(gesture) {
         const drag = this._drag;
         this._drag = null;
         if (!drag)
@@ -285,11 +282,10 @@ const LayoutCanvas = GObject.registerClass({
         drawLayout(cr, width, height, this.tree, {
             gap: 8, radius: 8, numbers: true, highlight: this._hover,
         });
-        // Linee di divisione trascinabili
         const [r, g, b] = accentColor();
         cr.setSourceRGBA(r, g, b, 1);
         cr.setLineWidth(3);
-        cr.setLineCap(1); // ROUND
+        cr.setLineCap(Cairo.LineCap.ROUND);
         for (const d of geometry(this.tree, width, height).dividers) {
             const middle = d.dir === 'cols' ? d.rect.y + d.rect.h / 2 : d.rect.x + d.rect.w / 2;
             const half = Math.min(18, (d.dir === 'cols' ? d.rect.h : d.rect.w) / 4);
@@ -304,8 +300,6 @@ const LayoutCanvas = GObject.registerClass({
         }
     }
 });
-
-// --- Finestra di dialogo --------------------------------------------------
 
 // layout: {id, name, root}; onSave(layout) riceve il layout modificato
 export function openLayoutEditor(parent, layout, onSave) {
@@ -354,9 +348,9 @@ export function openLayoutEditor(parent, layout, onSave) {
         selected: 0,
     });
     templateRow.connect('notify::selected', () => {
-        const t = templates[templateRow.selected];
-        if (t?.root)
-            canvas.setRoot(t.root);
+        const {root} = templates[templateRow.selected];
+        if (root)
+            canvas.setRoot(root);
     });
     group.add(templateRow);
     content.append(group);

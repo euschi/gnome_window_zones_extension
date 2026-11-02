@@ -8,7 +8,6 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 export class Keybindings {
     constructor(settings, zoneManager, actions) {
-        this._settings = settings;
         this._names = [];
         const focused = () => global.display.focus_window;
 
