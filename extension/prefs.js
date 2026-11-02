@@ -90,6 +90,8 @@ export default class WinZonesPreferences extends ExtensionPreferences {
                 switchRow('zones-drag-enabled', _('Show Zones While Dragging'),
                     _('Hold the modifier key while moving a window, then drop it into a zone')),
                 comboRow('drag-modifier', _('Modifier Key'), MODIFIERS),
+                switchRow('drag-layout-bar-enabled', _('Layout Bar While Dragging'),
+                    _('Drag a window to the top of the screen, then drop it on a zone of any layout')),
                 spinRow('zone-gap', _('Gap'), 0, 48, 2, _('Space around windows in pixels')),
                 switchRow('restore-size-on-drag', _('Restore Size'),
                     _('A window dragged out of its zone gets back its original size')),

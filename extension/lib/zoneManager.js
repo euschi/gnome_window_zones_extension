@@ -16,8 +16,8 @@ import {
     BUILTIN_LAYOUTS, allLayouts, parseJsonObject, zonesFromTree,
 } from './layoutModel.js';
 import {
-    areAdjacent, frameRectEquals, isTileable, monitorConnectors, overlapArea,
-    rectContains,
+    areAdjacent, frameRectEquals, isMaximized, isTileable, monitorConnectors,
+    overlapArea, rectContains,
 } from './utils.js';
 
 // Su Wayland il client applica la nuova dimensione in modo asincrono: per un
@@ -151,9 +151,16 @@ export class ZoneManager extends Signals.EventEmitter {
         const sameSize = previous &&
             Math.abs(current.width - previous.target.width) <= 4 &&
             Math.abs(current.height - previous.target.height) <= 4;
-        const orig = sameSize
-            ? previous.orig
-            : {width: current.width, height: current.height};
+        let orig = {width: current.width, height: current.height};
+        if (sameSize) {
+            orig = previous.orig;
+        } else if (isMaximized(window)) {
+            // Mutter non espone la dimensione di prima della massimizzazione
+            orig = {
+                width: Math.round(current.width * 2 / 3),
+                height: Math.round(current.height * 2 / 3),
+            };
+        }
 
         if (window.get_maximize_flags())
             window.unmaximize();
@@ -365,12 +372,13 @@ export class ZoneManager extends Signals.EventEmitter {
     // Finestre dello stesso monitor affiancate alla finestra data (lo spazio
     // tra le zone non conta)
     adjacentWindows(window) {
-        if (!isTileable(window))
+        if (!isTileable(window) || isMaximized(window))
             return [];
         const rect = window.get_frame_rect();
         const tolerance = this._settings.get_int('zone-gap') + 12;
         return this.windowsOnMonitor(window.get_monitor())
-            .filter(w => w !== window && areAdjacent(rect, w.get_frame_rect(), tolerance));
+            .filter(w => w !== window && !isMaximized(w) &&
+                areAdjacent(rect, w.get_frame_rect(), tolerance));
     }
 
     // Scambia posizione e dimensione di due finestre; chi era in una zona la
