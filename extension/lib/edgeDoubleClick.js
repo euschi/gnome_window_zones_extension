@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Doppio clic sul bordo di ridimensionamento → massimizzazione in una sola
-// direzione, come su Windows (alto/basso: verticale, sinistra/destra:
-// orizzontale).
+// Double click on a resize border → maximize in one direction only, like on
+// Windows (top/bottom: vertically, left/right: horizontally).
 //
-// Su Wayland i bordi delle finestre con decorazioni lato client appartengono
-// al client, quindi la Shell non riceve i clic. Ogni pressione sul bordo però
-// fa partire un grab di ridimensionamento di Mutter: due grab sullo stesso lato
-// della stessa finestra, ravvicinati e senza variazione di dimensione, sono un
-// doppio clic. Si agisce alla fine del secondo grab, così non c'è nessun grab
-// da annullare.
+// On Wayland the borders of client-side decorated windows belong to the client,
+// so the Shell doesn't receive the clicks. However, each press on the border
+// starts a Mutter resize grab: two grabs on the same side of the same window,
+// close in time and with no size change, are a double click. The action happens
+// at the end of the second grab, so there is no grab to cancel.
 //
-// Una volta massimizzata in una sola direzione la finestra non ha più un bordo
-// cliccabile su quel lato (finisce sotto il pannello o fuori schermo) e Mutter
-// la blocca su quell'asse: trascinandola lungo l'asse bloccato, al rilascio
-// torna alla dimensione di prima, sotto il puntatore.
+// Once maximized in one direction the window no longer has a clickable border
+// on that side (it ends up under the panel or off screen) and Mutter locks it on
+// that axis: when dragged along the locked axis, on release it returns to its
+// previous size, under the pointer.
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -23,17 +21,17 @@ import Meta from 'gi://Meta';
 
 import {GrabOpBits, frameRectEquals, isPointerMove} from './utils.js';
 
-// Spostamento minimo del puntatore lungo l'asse bloccato per ripristinare
+// Minimum pointer movement along the locked axis to restore the size
 const UNMAXIMIZE_DRAG_DISTANCE = 40;
 
 export class EdgeDoubleClick {
     constructor(settings) {
         this._settings = settings;
-        this._press = null;     // grab di resize in corso
-        this._lastClick = null; // ultimo "clic" (grab senza ridimensionamento)
+        this._press = null;     // resize grab in progress
+        this._lastClick = null; // last "click" (grab with no resize)
         this._idleId = 0;
-        this._move = null;      // spostamento di una finestra massimizzata a metà
-        this._saved = new Map(); // finestra → dimensione prima della massimizzazione
+        this._move = null;      // move of a half-maximized window
+        this._saved = new Map(); // window → size before the maximization
         this._mouseSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.peripherals.mouse'});
 
         global.display.connectObject(
@@ -67,7 +65,7 @@ export class EdgeDoubleClick {
         case GrabOpBits.WEST:
             return 'horizontal';
         default:
-            return null; // angoli o spostamento
+            return null; // corners or move
         }
     }
 
@@ -107,7 +105,7 @@ export class EdgeDoubleClick {
         if (!press || press.window !== window)
             return;
 
-        // Un ridimensionamento vero non è un clic
+        // An actual resize is not a click
         if (!frameRectEquals(window.get_frame_rect(), press.rect, 2)) {
             this._lastClick = null;
             return;
@@ -179,8 +177,8 @@ export class EdgeDoubleClick {
         };
         this._forget(window);
 
-        // Il puntatore resta alla stessa distanza dal bordo superiore (barra
-        // del titolo) e nella stessa posizione relativa in orizzontale
+        // The pointer keeps the same distance from the top edge (title bar) and
+        // the same relative position horizontally
         const relX = (move.x - move.rect.x) / move.rect.width;
         const area = window.get_work_area_current_monitor();
         const newX = vertical ? current.x : Math.max(area.x, Math.min(

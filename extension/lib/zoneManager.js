@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Geometria delle zone di ogni monitor e posizionamento delle finestre.
-// Ricorda, per ogni finestra sistemata in una zona, la dimensione originale
-// (per ripristinarla quando la si trascina via) e la zona occupata (per lo
-// Snap Assist e per lo spostamento tra zone da tastiera).
+// Zone geometry of each monitor and window placement.
+// For each window placed in a zone, remembers the original size (to restore it
+// when dragged away) and the occupied zone (for Snap Assist and for moving
+// between zones with the keyboard).
 
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
@@ -19,15 +19,15 @@ import {
     overlapArea, rectContains,
 } from './utils.js';
 
-// Su Wayland il client applica la nuova dimensione in modo asincrono: per un
-// po' dopo il posizionamento la finestra può non essere ancora dove l'abbiamo
-// messa, ma va considerata agganciata
+// On Wayland the client applies the new size asynchronously: for a while after
+// the placement the window may not be where we put it yet, but it has to be
+// considered snapped
 const SETTLE_TIME_US = 1500 * 1000;
 
 export class ZoneManager {
     constructor(settings) {
         this._settings = settings;
-        this._snapped = new Map(); // finestra → {monitor, zone, target, orig}
+        this._snapped = new Map(); // window → {monitor, zone, target, orig}
         this._layouts = allLayouts(settings);
         settings.connectObject('changed::custom-layouts', () => {
             this._layouts = allLayouts(settings);
@@ -65,8 +65,8 @@ export class ZoneManager {
         return Main.layoutManager.getWorkAreaForMonitor(monitor);
     }
 
-    // Zone in pixel: `rect` è l'area della zona (per il puntatore), `target`
-    // è il rettangolo in cui va la finestra (con lo spazio intorno)
+    // Zones in pixels: `rect` is the zone area (for the pointer), `target` is
+    // the rectangle the window goes into (with the gap around it)
     zonesForLayout(layout, monitor) {
         const area = this.workArea(monitor);
         const half = this._settings.get_int('zone-gap') / 2;
@@ -84,8 +84,8 @@ export class ZoneManager {
         return this.zonesForLayout(this.layoutForMonitor(monitor), monitor);
     }
 
-    // Spazio di `half` tra zone vicine e di `2 * half` verso i bordi dello
-    // schermo, così tutti gli spazi risultano uguali
+    // Gap of `half` between neighboring zones and of `2 * half` towards the
+    // screen edges, so that all the gaps end up equal
     _inset(rect, area, half) {
         const left = rect.x === area.x ? 2 * half : half;
         const top = rect.y === area.y ? 2 * half : half;
@@ -99,7 +99,7 @@ export class ZoneManager {
         };
     }
 
-    // Quarto dello schermo per lo snap negli angoli
+    // Quarter of the screen for snapping to corners
     quarterRect(monitor, corner) {
         const area = this.workArea(monitor);
         const w = Math.round(area.width / 2);
@@ -131,8 +131,8 @@ export class ZoneManager {
 
         const previous = this._snapped.get(window);
         const current = window.get_frame_rect();
-        // La dimensione originale è quella di prima del primo aggancio (la
-        // posizione non conta: la finestra può essere appena stata trascinata)
+        // The original size is the one from before the first snap (the position
+        // doesn't matter: the window may have just been dragged)
         const sameSize = previous &&
             Math.abs(current.width - previous.target.width) <= 4 &&
             Math.abs(current.height - previous.target.height) <= 4;
@@ -140,7 +140,7 @@ export class ZoneManager {
         if (sameSize) {
             orig = previous.orig;
         } else if (isMaximized(window)) {
-            // Mutter non espone la dimensione di prima della massimizzazione
+            // Mutter doesn't expose the size from before the maximization
             orig = {
                 width: Math.round(current.width * 2 / 3),
                 height: Math.round(current.height * 2 / 3),
@@ -165,8 +165,8 @@ export class ZoneManager {
         this._snapped.delete(window);
     }
 
-    // Stato di aggancio, valido solo se la finestra è ancora dove l'abbiamo
-    // messa (se l'utente l'ha ridimensionata a mano non è più agganciata)
+    // Snap state, valid only if the window is still where we put it (if the
+    // user resized it by hand it is no longer snapped)
     snapState(window) {
         const state = this._snapped.get(window);
         if (!state)
@@ -181,9 +181,9 @@ export class ZoneManager {
         return state;
     }
 
-    // Finestra agganciata ridimensionata insieme alle vicine: resta agganciata
-    // alla stessa zona con la nuova dimensione (e la dimensione originale di
-    // prima). Lo stato va verificato con snapState() prima del ridimensionamento.
+    // Snapped window resized together with its neighbors: it stays snapped to
+    // the same zone with the new size (and the previous original size). The
+    // state must be checked with snapState() before the resize.
     updateTarget(window, rect) {
         const state = this._snapped.get(window);
         if (!state)
@@ -193,8 +193,8 @@ export class ZoneManager {
         state.placedAt = GLib.get_monotonic_time();
     }
 
-    // Ripristina la dimensione originale mantenendo il puntatore nella stessa
-    // posizione relativa della finestra
+    // Restore the original size keeping the pointer in the same relative
+    // position of the window
     restoreSize(window, pointerX, pointerY) {
         const state = this._snapped.get(window);
         if (!state)
@@ -213,7 +213,7 @@ export class ZoneManager {
         window.move_resize_frame(true, x, y, width, height);
     }
 
-    // Zone del monitor occupate da finestre agganciate (sul workspace attivo)
+    // Zones of the monitor occupied by snapped windows (on the active workspace)
     occupiedZones(monitor) {
         const workspace = global.workspace_manager.get_active_workspace();
         const occupied = new Set();
@@ -233,8 +233,8 @@ export class ZoneManager {
             .filter(w => w.get_monitor() === monitor && isTileable(w));
     }
 
-    // Zona in cui si trova la finestra: quella agganciata o, altrimenti, quella
-    // che si sovrappone di più
+    // Zone the window is in: the snapped one or, otherwise, the one it
+    // overlaps the most
     currentZone(window) {
         const monitor = window.get_monitor();
         const state = this.snapState(window);
@@ -260,7 +260,7 @@ export class ZoneManager {
         const state = this.snapState(window);
         const fromIndex = state && state.monitor === monitor ? state.zone : -1;
 
-        // Finestra non agganciata: va nella zona più vicina a quel lato
+        // Window not snapped: it goes to the zone closest to that side
         if (fromIndex < 0) {
             const target = this._edgeZone(zones, direction, window.get_frame_rect());
             if (target)
@@ -274,7 +274,7 @@ export class ZoneManager {
             return;
         }
 
-        // Oltre il bordo: zona più vicina del monitor accanto
+        // Past the edge: closest zone of the next monitor
         const metaDirection = {
             left: Meta.DisplayDirection.LEFT, right: Meta.DisplayDirection.RIGHT,
             up: Meta.DisplayDirection.UP, down: Meta.DisplayDirection.DOWN,
@@ -293,8 +293,8 @@ export class ZoneManager {
         return {x: r.x + r.width / 2, y: r.y + r.height / 2};
     }
 
-    // Zona adiacente nella direzione data: la più vicina tra quelle che stanno
-    // da quel lato, preferendo quelle allineate sull'altro asse
+    // Adjacent zone in the given direction: the closest among those on that
+    // side, preferring the ones aligned on the other axis
     _neighbour(zones, from, direction) {
         const c = this._center(from.rect);
         const horizontal = direction === 'left' || direction === 'right';
@@ -320,7 +320,7 @@ export class ZoneManager {
         return best;
     }
 
-    // Zona sul lato `direction` dell'area, la più allineata al rettangolo dato
+    // Zone on the `direction` side of the area, the most aligned with the given rectangle
     _edgeZone(zones, direction, rect) {
         const c = this._center(rect);
         const horizontal = direction === 'left' || direction === 'right';
@@ -343,7 +343,7 @@ export class ZoneManager {
         return candidates[0] ?? null;
     }
 
-    // Distribuisce le finestre del monitor nelle zone, dalla più recente
+    // Distribute the windows of the monitor into the zones, most recent first
     applyToAll(monitor) {
         const zones = this.zonesForMonitor(monitor);
         const windows = this.windowsOnMonitor(monitor);
@@ -351,8 +351,8 @@ export class ZoneManager {
             this.placeInZone(window, monitor, zones[i % zones.length].index));
     }
 
-    // Finestre dello stesso monitor affiancate alla finestra data (lo spazio
-    // tra le zone non conta)
+    // Windows of the same monitor side by side with the given window (the gap
+    // between zones doesn't count)
     adjacentWindows(window) {
         if (!isTileable(window) || isMaximized(window))
             return [];
@@ -363,8 +363,8 @@ export class ZoneManager {
                 areAdjacent(rect, w.get_frame_rect(), tolerance));
     }
 
-    // Scambia posizione e dimensione di due finestre; chi era in una zona la
-    // passa all'altra
+    // Swap position and size of two windows; whichever was in a zone hands it
+    // over to the other
     swapWindows(a, b) {
         if (!isTileable(a) || !isTileable(b))
             return;

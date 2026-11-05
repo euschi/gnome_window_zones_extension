@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Menu della finestra sulla barra del titolo delle PWA di Chrome.
+// Window menu on the title bar of Chrome PWAs.
 //
-// La barra del titolo di una PWA è disegnata da Chrome: il clic destro apre un
-// menu di Chrome (Indietro, Ricarica, Task Manager…) e non chiede mai a Mutter
-// il menu della finestra, quindi le voci di windowMenu.js non compaiono.
+// The title bar of a PWA is drawn by Chrome: right click opens a Chrome menu
+// (Back, Reload, Task Manager…) and never asks Mutter for the window menu, so
+// the items from windowMenu.js don't show up.
 //
-// Su Wayland il clic arriva al client senza passare dalla Shell e non si può
-// intercettare (i filtri di Clutter vengono dopo quello di Mutter). Si riconosce
-// invece il popup appena nasce: quello del clic destro si apre sotto il puntatore
-// che sta sulla barra, mentre gli altri (il pulsante ⋮, i tooltip) si aprono più
-// in basso. Il popup resta nascosto, viene chiuso con un Esc e poi si apre il menu
-// della finestra. Con Maiusc premuto resta il menu di Chrome.
+// On Wayland the click reaches the client without going through the Shell and
+// can't be intercepted (Clutter filters run after Mutter's). The popup is
+// recognized as soon as it appears instead: the right click one opens under the
+// pointer, which is on the title bar, while the others (the ⋮ button, tooltips)
+// open lower down. The popup stays hidden, is closed with an Esc and then the
+// window menu opens. With Shift held down the Chrome menu stays.
 //
-// Attenzione: Meta.Window.delete() su un popup Wayland manda in crash Mutter.
+// Warning: Meta.Window.delete() on a Wayland popup crashes Mutter.
 
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
@@ -24,20 +24,20 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import {isTileable} from './utils.js';
 
-// Finestre delle PWA su Wayland: "chrome-<id app>-<profilo>". La finestra normale
-// del browser ("google-chrome") ha il proprio menu e resta esclusa.
+// PWA windows on Wayland: "chrome-<app id>-<profile>". The regular browser
+// window ("google-chrome") has its own menu and stays excluded.
 const CHROME_APP_CLASS = /^(chrome|chromium)-.+-(Default|Profile[ _]?\d+)$/;
 
-// Altezza della barra del titolo di una PWA, in pixel logici. Chrome non la
-// espone: se fosse più bassa del vero resterebbe il menu di Chrome in una
-// striscia, se fosse più alta si perderebbe il menu della pagina.
+// Height of a PWA title bar, in logical pixels. Chrome doesn't expose it: if
+// lower than the real one, the Chrome menu would remain in a strip, if higher,
+// the page menu would be lost.
 const TITLE_BAR_HEIGHT = 28;
 
-// Distanza verticale massima tra il puntatore e il bordo da cui si apre il popup.
-// Deve restare piccola: il menu del pulsante ⋮ si apre pochi pixel sotto la barra.
+// Maximum vertical distance between the pointer and the edge the popup opens
+// from. It must stay small: the ⋮ button menu opens a few pixels below the bar.
 const ANCHOR_TOLERANCE = 2;
 
-// Oltre questo tempo si rinuncia e si rimette in vista il popup di Chrome
+// After this time, give up and show the Chrome popup again
 const POPUP_TIMEOUT_MS = 500;
 
 export class ChromeAppMenu {
@@ -71,8 +71,8 @@ export class ChromeAppMenu {
         if (!CHROME_APP_CLASS.test(parent?.get_wm_class() ?? '') || !isTileable(parent))
             return;
 
-        // Il tasto destro non si può pretendere: con un clic rapido può essere
-        // già stato rilasciato quando nasce il popup
+        // The right button can't be required: with a quick click it may already
+        // be released when the popup appears
         const [x, y, mods] = global.get_pointer();
         const ignored = Clutter.ModifierType.SHIFT_MASK | Clutter.ModifierType.BUTTON1_MASK;
         if ((mods & ignored) || !this._inTitleBar(parent, x, y))
@@ -83,8 +83,8 @@ export class ChromeAppMenu {
             return;
 
         this._finish(true);
-        // Il popup non ha ancora una posizione: si nasconde subito per evitare
-        // il lampo e si decide quando Chrome lo disegna
+        // The popup has no position yet: hide it right away to avoid a flash,
+        // and decide when Chrome draws it
         actor.opacity = 0;
         this._pending = {popup, parent, actor, x, y, dismissing: false};
         popup.connectObject(
@@ -122,8 +122,8 @@ export class ChromeAppMenu {
         this._pressEscape();
     }
 
-    // In orizzontale basta che il puntatore cada nel popup: vicino al bordo dello
-    // schermo Chrome lo sposta. In basso, invece, lo apre verso l'alto.
+    // Horizontally the pointer just has to fall inside the popup: near the
+    // screen edge Chrome moves it. At the bottom, though, it opens upwards.
     _isAnchoredAtPointer(rect, {x, y}) {
         const closeTo = (a, b) => Math.abs(a - b) <= ANCHOR_TOLERANCE;
         return x >= rect.x && x <= rect.x + rect.width &&
@@ -149,7 +149,7 @@ export class ChromeAppMenu {
         if (!dismissing)
             return;
 
-        // Il menu prende un grab: meglio fuori dal segnale di Mutter
+        // The menu takes a grab: better outside of the Mutter signal
         if (this._idleId)
             GLib.source_remove(this._idleId);
         this._idleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {

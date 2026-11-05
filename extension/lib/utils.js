@@ -4,7 +4,7 @@
 import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 
-// Bit di Meta.GrabOp (META_GRAB_OP_WINDOW_BASE, _KEYBOARD, direzioni)
+// Meta.GrabOp bits (META_GRAB_OP_WINDOW_BASE, _KEYBOARD, directions)
 export const GrabOpBits = {
     WINDOW: 1,
     KEYBOARD: 256,
@@ -36,16 +36,16 @@ export function isMaximized(window) {
     return window.get_maximize_flags() === Meta.MaximizeFlags.BOTH;
 }
 
-// Finestre normali che ha senso sistemare nelle zone. Per Mutter una finestra
-// massimizzata non è ridimensionabile, ma lo torna appena smette di esserlo.
+// Regular windows that make sense to place in zones. For Mutter a maximized
+// window isn't resizable, but it becomes so again as soon as it stops being one.
 export function isTileable(window) {
     return window && !window.is_skip_taskbar() && !window.minimized &&
         window.get_window_type() === Meta.WindowType.NORMAL &&
         (window.allows_resize() || isMaximized(window)) && !window.is_fullscreen();
 }
 
-// Nome del connettore (es. "DP-1") di ogni indice di monitor, per ricordare il
-// layout di un monitor anche se cambia l'ordine dei monitor
+// Connector name (e.g. "DP-1") of each monitor index, to remember the layout of
+// a monitor even if the monitor order changes
 export function monitorConnectors() {
     const manager = global.backend.get_monitor_manager();
     const map = new Map();
@@ -64,7 +64,7 @@ export function rectContains(r, x, y) {
     return x >= r.x && x < r.x + r.width && y >= r.y && y < r.y + r.height;
 }
 
-// Lunghezza del tratto in comune tra due segmenti (negativa se sono separati)
+// Length of the part shared by two segments (negative if they are apart)
 export function overlap(s1, l1, s2, l2) {
     return Math.min(s1 + l1, s2 + l2) - Math.max(s1, s2);
 }
@@ -75,8 +75,8 @@ export function overlapArea(a, b) {
     return w > 0 && h > 0 ? w * h : 0;
 }
 
-// Due rettangoli affiancati (o impilati) a meno di `tolerance` pixel l'uno
-// dall'altro e sovrapposti per almeno metà sull'altro asse
+// Two rectangles side by side (or stacked) within `tolerance` pixels of each
+// other and overlapping by at least half on the other axis
 export function areAdjacent(a, b, tolerance) {
     const near = (end, start) => Math.abs(end - start) <= tolerance;
     if ((near(a.x + a.width, b.x) || near(b.x + b.width, a.x)) &&
