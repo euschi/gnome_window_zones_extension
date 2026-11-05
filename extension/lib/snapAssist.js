@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Snap Assist: dopo aver messo una finestra in una zona, mostra nelle zone
-// ancora libere le miniature delle altre finestre; un clic la sistema lì e si
-// passa alla zona libera successiva. Esc o un clic altrove chiudono.
+// Snap Assist: after placing a window in a zone, shows the thumbnails of the
+// other windows in the zones still free; a click places a window there and moves
+// on to the next free zone. Esc or a click elsewhere closes it.
 
 import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
@@ -40,14 +40,14 @@ export class SnapAssist {
         this._open();
     }
 
-    // Prima zona del monitor non occupata da una finestra agganciata
+    // First zone of the monitor not occupied by a snapped window
     _freeZone() {
         const occupied = this._zones.occupiedZones(this._monitor);
         return this._zones.zonesForMonitor(this._monitor)
             .find(z => !occupied.has(z.index)) ?? null;
     }
 
-    // Finestre del workspace attivo che non sono già in una zona del monitor
+    // Windows of the active workspace that aren't already in a zone of the monitor
     _candidates() {
         const workspace = global.workspace_manager.get_active_workspace();
         return global.display.get_tab_list(Meta.TabList.NORMAL, workspace).filter(w => {
@@ -164,14 +164,12 @@ export class SnapAssist {
     }
 
     close() {
-        if (!this._actor)
-            return;
         global.display.disconnectObject(this);
         global.workspace_manager.disconnectObject(this);
         if (this._grab)
             Main.popModal(this._grab);
         this._grab = null;
-        this._actor.destroy();
+        this._actor?.destroy();
         this._actor = null;
     }
 }

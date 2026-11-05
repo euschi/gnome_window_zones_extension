@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Voci aggiunte al menu della finestra (clic destro sulla barra del titolo):
-// miniatura del layout attivo per mettere la finestra in una zona, sottomenu
-// con tutti i layout (un clic su una zona cambia layout e sposta la finestra,
-// un clic sul nome cambia solo il layout) e scambio di posizione con le
-// finestre affiancate.
+// Items added to the window menu (right click on the title bar): thumbnail of
+// the active layout to put the window in a zone, submenu with all the layouts
+// (a click on a zone changes the layout and moves the window, a click on the
+// name only changes the layout) and position swap with the windows side by side.
 
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
@@ -51,14 +50,13 @@ export class WindowMenuItems {
         const monitor = window.get_monitor();
         const geometry = Main.layoutManager.monitors[monitor];
 
-        // Il sottomenu dei layout può essere lungo: limitando l'altezza del
-        // menu all'area di lavoro, il sottomenu scorre invece di uscire dallo
-        // schermo
+        // The layout submenu can be long: by limiting the menu height to the work
+        // area, the submenu scrolls instead of going off screen
         const workArea = this._zones.workArea(monitor);
         const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         menu.actor.style = `max-height: ${Math.round(workArea.height / scale)}px;`;
 
-        // Prima dell'ultimo separatore e di "Chiudi"
+        // Before the last separator and "Close"
         let position = Math.max(0, menu.numMenuItems - 2);
         const add = item => menu.addMenuItem(item, position++);
 
@@ -67,9 +65,9 @@ export class WindowMenuItems {
         const currentZone = state && state.monitor === monitor ? state.zone : -1;
         let layoutsItem = null;
         const place = (layout, zoneIndex) => {
-            // Il menu della finestra viene distrutto appena si chiude, mentre
-            // il sottomenu si chiuderebbe solo a fine animazione, su un menu
-            // ormai distrutto: va chiuso prima e senza animazione
+            // The window menu is destroyed as soon as it closes, while the submenu
+            // would only close at the end of its animation, on a menu already
+            // destroyed: it has to be closed first and without animation
             layoutsItem?.menu.close({animate: false});
             menu.close();
             this._zones.setLayoutForMonitor(monitor, layout.id);
@@ -95,7 +93,7 @@ export class WindowMenuItems {
         box.add_child(this._thumbnail(active, geometry, THUMB_WIDTH, true,
             currentZone, index => place(active, index)));
         zonesItem.add_child(box);
-        // Stesso rientro delle voci native del menu
+        // Same indentation as the native menu items
         zonesItem.setOrnament(PopupMenu.Ornament.NONE);
         add(zonesItem);
 
@@ -139,9 +137,9 @@ export class WindowMenuItems {
         }
     }
 
-    // Voce che fa solo da contenitore per dei pulsanti: non si attiva e non si
-    // evidenzia, ma resta reattiva (St segna come "insensitive", e quindi
-    // attenua, i widget non reattivi)
+    // Item acting only as a container for buttons: it doesn't activate or
+    // highlight, but stays reactive (St marks non-reactive widgets as
+    // "insensitive", which dims them)
     _containerItem(styleClass = null) {
         const item = new PopupMenu.PopupBaseMenuItem({
             activate: false, hover: false, can_focus: false, style_class: styleClass,
@@ -151,7 +149,7 @@ export class WindowMenuItems {
         return item;
     }
 
-    // Miniatura del layout in proporzione al monitor; ogni zona è un pulsante
+    // Layout thumbnail proportional to the monitor; each zone is a button
     _thumbnail(layout, geometry, width, numbered, checkedZone, onZone) {
         const height = Math.round(width * geometry.height / geometry.width);
         const canvas = new St.Widget({width, height});

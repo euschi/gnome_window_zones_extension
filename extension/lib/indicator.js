@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Indicatore nel pannello: layout attivo di ogni monitor e azioni rapide.
+// Panel indicator: active layout of each monitor and quick actions.
 
 import GObject from 'gi://GObject';
 import St from 'gi://St';
@@ -26,8 +26,8 @@ class WinZonesIndicator extends PanelMenu.Button {
             style_class: 'system-status-icon',
         }));
 
-        // Il menu viene ricostruito all'apertura: layout e monitor possono
-        // essere cambiati nel frattempo
+        // The menu is rebuilt when opened: layouts and monitors may have changed
+        // in the meantime
         this.menu.connect('open-state-changed', (_m, open) => {
             if (open)
                 this._buildMenu();

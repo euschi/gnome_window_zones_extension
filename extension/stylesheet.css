@@ -1,4 +1,4 @@
-/* Zone mostrate durante il trascinamento */
+/* Zones shown while dragging */
 .winzones-zone {
     background-color: st-transparentize(-st-accent-color, 0.88);
     border: 2px solid st-transparentize(-st-accent-color, 0.45);
@@ -52,7 +52,7 @@
     padding-top: 6px;
 }
 
-/* Selettore dei layout */
+/* Layout picker */
 .winzones-picker-backdrop {
     background-color: rgba(0, 0, 0, 0.35);
 }
@@ -102,7 +102,7 @@
     background-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Barra dei layout durante il trascinamento */
+/* Layout bar while dragging */
 .winzones-layout-bar {
     background-color: rgba(36, 36, 36, 0.95);
     border-radius: 16px;
@@ -126,7 +126,7 @@
     background-color: -st-accent-color;
 }
 
-/* Menu della finestra (clic destro sulla barra del titolo) */
+/* Window menu (right click on the title bar) */
 .winzones-menu-layout-item {
     padding-top: 2px;
     padding-bottom: 2px;

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Riga delle preferenze per una scorciatoia da tastiera salvata in GSettings
-// come array di stringhe (si gestisce solo la prima).
+// Preferences row for a keyboard shortcut stored in GSettings as an array of
+// strings (only the first one is handled).
 
 import Adw from 'gi://Adw';
 import Gdk from 'gi://Gdk';

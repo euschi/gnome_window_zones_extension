@@ -1,24 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Ridimensionamento collegato: mentre si trascina il bordo di una finestra,
-// le finestre affiancate su quel lato seguono il bordo in tempo reale (si
-// allargano quando la finestra si restringe e viceversa), mantenendo lo
-// spazio che c'era tra loro.
+// Linked resize: while dragging the border of a window, the windows side by
+// side on that edge follow the border in real time (they grow when the window
+// shrinks and vice versa), keeping the gap that was between them.
 //
-// Al rilascio le finestre agganciate a una zona restano agganciate con la
-// nuova dimensione, così trascinandole via tornano comunque alla dimensione
-// originale.
+// On release, windows snapped to a zone stay snapped with the new size, so when
+// dragged away they still return to their original size.
 
 import GLib from 'gi://GLib';
 
 import {GrabOpBits, frameRectEquals, isTileable, overlap} from './utils.js';
 
-// Dimensione minima a cui può essere ridotta una finestra collegata
+// Minimum size a linked window can be shrunk to
 const MIN_SIZE = 120;
 
-// Tempo dopo il rilascio in cui si seguono ancora le dimensioni applicate dal
-// client
+// Time after the release during which the sizes applied by the client are
+// still followed
 const SETTLE_TIME_MS = 400;
 
 const EDGES = [
@@ -69,7 +67,7 @@ export class LinkedResize {
 
         const rect = window.get_frame_rect();
         const tolerance = this._settings.get_int('zone-gap') + 12;
-        // Finestre già gestite da Mutter (metà schermo affiancate)
+        // Windows already handled by Mutter (side-by-side half screen)
         const tileMatch = window.get_tile_match();
         const others = this._zones.windowsOnMonitor(window.get_monitor())
             .filter(w => w !== window && w !== tileMatch);
@@ -84,7 +82,7 @@ export class LinkedResize {
             for (const other of others) {
                 const r = other.get_frame_rect();
                 const otherEdge = edgeOf(r, opposite);
-                // Il vicino deve stare dalla parte del bordo trascinato
+                // The neighbor must be on the side of the dragged border
                 const beyond = side === 'right' || side === 'bottom'
                     ? otherEdge >= edge - 2 : otherEdge <= edge + 2;
                 if (!beyond || Math.abs(otherEdge - edge) > tolerance)
@@ -105,8 +103,8 @@ export class LinkedResize {
         if (!links.length)
             return;
 
-        // Verifica ora lo stato di aggancio: a fine ridimensionamento le
-        // finestre non corrispondono più alla zona finché non lo aggiorniamo
+        // Check the snap state now: at the end of the resize the windows no
+        // longer match the zone until we update it
         this._zones.snapState(window);
         for (const link of links)
             this._zones.snapState(link.window);
@@ -128,7 +126,7 @@ export class LinkedResize {
         this._resize.links = this._resize.links.filter(l => l.window !== window);
     }
 
-    // Sposta il bordo opposto di ogni vicino in base al bordo trascinato
+    // Move the opposite border of each neighbor according to the dragged border
     _follow() {
         const resize = this._resize;
         if (!resize)
@@ -144,7 +142,7 @@ export class LinkedResize {
             const target = edgeOf(rect, side) + offset;
             let {x, y, width, height} = r;
             switch (OPPOSITE[side]) {
-            case 'left': // il vicino sta a destra: muove il suo bordo sinistro
+            case 'left': // the neighbor is on the right: move its left border
                 x = Math.min(target, r.x + r.width - MIN_SIZE);
                 width = r.x + r.width - x;
                 break;
@@ -164,8 +162,8 @@ export class LinkedResize {
         }
     }
 
-    // Il bordo trascinato si ferma quando un vicino arriva alla dimensione
-    // minima, invece di finirgli sopra
+    // The dragged border stops when a neighbor reaches the minimum size,
+    // instead of going over it
     _clamp(current, links) {
         let left = current.x, top = current.y;
         let right = current.x + current.width, bottom = current.y + current.height;
@@ -191,14 +189,14 @@ export class LinkedResize {
         const resize = this._resize;
         if (!resize || resize.window !== window)
             return;
-        // Il client applica l'ultima dimensione del trascinamento anche dopo il
-        // rilascio: si continua a seguirlo (e a fermarlo al limite) per un po'
+        // The client applies the last drag size even after the release: keep
+        // following it (and stopping it at the limit) for a while
         this._follow();
         resize.settleId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, SETTLE_TIME_MS, () => {
             resize.settleId = 0;
             this._follow();
             this._zones.updateTarget(window, resize.rect);
-            // Il client del vicino può non aver ancora applicato la dimensione
+            // The neighbor's client may not have applied the size yet
             for (const link of resize.links) {
                 if (link.requested)
                     this._zones.updateTarget(link.window, link.requested);

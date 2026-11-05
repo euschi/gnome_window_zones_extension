@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Editor visuale dei layout:
-// - clic su una zona: la divide in colonne nel punto cliccato;
-// - Shift+clic: la divide in righe;
-// - clic destro o Ctrl+clic: la unisce alla zona vicina;
-// - trascinando le linee tra le zone si cambiano le proporzioni.
+// Visual layout editor:
+// - click on a zone: split it into columns at the clicked point;
+// - Shift+click: split it into rows;
+// - right click or Ctrl+click: merge it with the neighboring zone;
+// - dragging the lines between zones changes the proportions.
 
 import Cairo from 'cairo';
 import Adw from 'gi://Adw';
@@ -28,8 +28,8 @@ function nodeAt(root, path) {
     return path.reduce((node, i) => node.children[i], root);
 }
 
-// Unisce le divisioni annidate nella stessa direzione ed elimina quelle con un
-// solo figlio, così l'albero resta minimo
+// Merge nested splits in the same direction and remove those with a single
+// child, so that the tree stays minimal
 function normalize(node) {
     if (node.zone)
         return node;
@@ -200,7 +200,7 @@ const LayoutCanvas = GObject.registerClass({
         const length = dir === 'cols' ? rect.w : rect.h;
         const pair = drag.startSizes[index] + drag.startSizes[index + 1];
         let a = drag.startSizes[index] + (dir === 'cols' ? dx : dy) / length;
-        // Aggancio a passi dell'1%
+        // Snap to 1% steps
         a = Math.round(a * 100) / 100;
         a = Math.max(MIN_SIZE, Math.min(pair - MIN_SIZE, a));
         node.sizes[index] = a;
@@ -223,7 +223,7 @@ const LayoutCanvas = GObject.registerClass({
         if (drag.moved)
             return;
 
-        // È un clic su una zona
+        // It's a click on a zone
         const index = this._leafAt(drag.x, drag.y);
         if (index < 0)
             return;
@@ -301,7 +301,7 @@ const LayoutCanvas = GObject.registerClass({
     }
 });
 
-// layout: {id, name, root}; onSave(layout) riceve il layout modificato
+// layout: {id, name, root}; onSave(layout) receives the edited layout
 export function openLayoutEditor(parent, layout, onSave) {
     const dialog = new Adw.Dialog({
         title: _('Edit Layout'),
@@ -335,7 +335,7 @@ export function openLayoutEditor(parent, layout, onSave) {
     const nameRow = new Adw.EntryRow({title: _('Name'), text: layout.name});
     group.add(nameRow);
 
-    // La prima voce lascia le zone come sono: scegliere un modello le sostituisce
+    // The first item leaves the zones as they are: picking a template replaces them
     const templates = [
         {name: _('Keep Current Zones'), root: null},
         {name: _('Single Zone'), root: zone()},

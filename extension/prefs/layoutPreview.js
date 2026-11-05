@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Disegno di un layout con Cairo, usato dalle miniature e dall'editor.
+// Draws a layout with Cairo, used by the thumbnails and by the editor.
 
 import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
@@ -26,7 +26,7 @@ function roundedRect(cr, x, y, w, h, r) {
     cr.closePath();
 }
 
-// opts: {gap, radius, numbers, highlight (indice zona)}
+// opts: {gap, radius, numbers, highlight (zone index)}
 export function drawLayout(cr, width, height, root, {gap, radius, numbers = false, highlight = -1}) {
     const [r, g, b] = accentColor();
     const dark = Adw.StyleManager.get_default().dark;

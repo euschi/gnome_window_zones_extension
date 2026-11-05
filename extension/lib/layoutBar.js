@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Barra con le miniature di tutti i layout, mostrata in alto mentre si trascina
-// una finestra (stile Snap Layouts di Windows 11).
+// Bar with the thumbnails of all the layouts, shown at the top while dragging
+// a window (in the style of Windows 11 Snap Layouts).
 //
-// Durante il grab di spostamento la Shell non riceve eventi del puntatore: la
-// barra non è reattiva e dragSnap.js le chiede cosa c'è sotto il puntatore. Per
-// questo le posizioni sono calcolate qui e non lasciate a un layout manager.
+// During the move grab the Shell receives no pointer events: the bar isn't
+// reactive and dragSnap.js asks it what is under the pointer. This is why the
+// positions are computed here and not left to a layout manager.
 
 import St from 'gi://St';
 
@@ -21,7 +21,7 @@ const THUMB_SPACING = 8;
 const BAR_PADDING = 10;
 const BAR_TOP_MARGIN = 6;
 const ZONE_GAP = 2;
-// Margine intorno alla barra entro cui resta aperta
+// Margin around the bar within which it stays open
 const KEEP_OPEN_MARGIN = 16;
 const MAX_WIDTH_RATIO = 0.9;
 
@@ -113,8 +113,8 @@ export class LayoutBar {
         this._active = null;
     }
 
-    // Puntatore sulla barra, sul margine intorno o più in alto (sul pannello):
-    // risalendo verso il bordo la barra non deve chiudersi
+    // Pointer on the bar, on the margin around it or higher (on the panel):
+    // the bar must not close when moving back up towards the edge
     contains(x, y) {
         if (!this._rect)
             return false;
@@ -123,7 +123,7 @@ export class LayoutBar {
             y < top + height + KEEP_OPEN_MARGIN;
     }
 
-    // Evidenzia la zona sotto il puntatore e la restituisce: {layout, index, rect}
+    // Highlight the zone under the pointer and return it: {layout, index, rect}
     update(x, y) {
         const hit = this._hits.find(h => rectContains(h.rect, x, y)) ?? null;
         if (hit !== this._active) {
