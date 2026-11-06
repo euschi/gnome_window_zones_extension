@@ -166,7 +166,7 @@ export default class WinZonesPreferences extends ExtensionPreferences {
 
         const deleteLayout = layout => {
             writeCustom(readCustom().filter(l => l.id !== layout.id));
-            // I monitor che usavano il layout tornano a quello predefinito
+            // Monitors that were using the layout go back to the default one
             const active = parseJsonObject(settings.get_string('active-layouts'));
             for (const [connector, id] of Object.entries(active)) {
                 if (id === layout.id)

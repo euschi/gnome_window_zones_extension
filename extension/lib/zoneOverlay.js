@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Disegna sopra le finestre le zone del layout (con quella sotto il puntatore
-// evidenziata) oppure un singolo rettangolo di anteprima.
+// Draws over the windows the zones of the layout (with the one under the pointer
+// highlighted) or a single preview rectangle.
 
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
@@ -23,7 +23,7 @@ export class ZoneOverlay {
         this._zoneActors = [];
     }
 
-    // zones: [{index, rect}], active: indice evidenziato (o -1)
+    // zones: [{index, rect}], active: highlighted index (or -1)
     showZones(zones, active) {
         const key = JSON.stringify(zones.map(z => z.rect));
         if (key !== this._key) {

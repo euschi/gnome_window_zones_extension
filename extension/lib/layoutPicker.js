@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Selettore dei layout (stile Snap Layouts di Windows 11): mostra le
-// miniature di tutti i layout sul monitor corrente. Un clic su una zona rende
-// attivo quel layout per il monitor e ci sposta la finestra attiva; un clic sul
-// nome attiva solo il layout.
+// Layout picker (in the style of Windows 11 Snap Layouts): shows the thumbnails
+// of all the layouts on the current monitor. A click on a zone makes that layout
+// active for the monitor and moves the active window there; a click on the name
+// only activates the layout.
 
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
@@ -143,12 +143,10 @@ export class LayoutPicker {
     }
 
     close() {
-        if (!this._actor)
-            return;
         if (this._grab)
             Main.popModal(this._grab);
         this._grab = null;
-        this._actor.destroy();
+        this._actor?.destroy();
         this._actor = null;
         this._window = null;
     }

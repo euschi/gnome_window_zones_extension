@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Trascinamento delle finestre:
-// - con il tasto modificatore premuto compaiono le zone del layout e al
-//   rilascio la finestra va nella zona sotto il puntatore;
-// - senza tasto, portando il puntatore in alto compare la barra di tutti i
-//   layout: al rilascio su una zona il layout si attiva e la finestra ci va;
-// - senza tasto, portando il puntatore in un angolo la finestra va nel quarto
-//   di schermo corrispondente;
-// - una finestra agganciata che viene trascinata altrove torna alla sua
-//   dimensione originale.
+// Window dragging:
+// - with the modifier key held down the layout zones appear, and on release
+//   the window goes into the zone under the pointer;
+// - without the key, moving the pointer to the top shows the bar with all the
+//   layouts: on release over a zone the layout is activated and the window
+//   goes there;
+// - without the key, moving the pointer to a corner puts the window in the
+//   matching quarter of the screen;
+// - a snapped window dragged elsewhere returns to its original size.
 //
-// Durante il grab di spostamento Mutter non passa gli eventi del puntatore
-// alla Shell, quindi la posizione viene letta a intervalli regolari.
+// During the move grab Mutter doesn't pass pointer events to the Shell, so the
+// position is read at regular intervals.
 
 import GLib from 'gi://GLib';
 
@@ -24,7 +24,7 @@ import {MODIFIER_MASKS, isPointerMove, isTileable} from './utils.js';
 
 const POLL_INTERVAL_MS = 16;
 
-// Striscia in cima all'area di lavoro che fa comparire la barra dei layout
+// Strip at the top of the work area that makes the layout bar appear
 const BAR_TRIGGER_HEIGHT = 16;
 
 export class DragSnap {
@@ -132,8 +132,8 @@ export class DragSnap {
 
         const area = this._zones.workArea(monitor);
         const inStrip = y < area.y + BAR_TRIGGER_HEIGHT;
-        // Una finestra già in alto parte con il puntatore nella striscia: la barra
-        // non deve comparire a ogni presa, ma solo tornandoci
+        // A window already at the top starts with the pointer in the strip: the
+        // bar must not appear on every grab, only when coming back to it
         if (!inStrip)
             drag.barArmed = true;
 
@@ -178,7 +178,7 @@ export class DragSnap {
         return null;
     }
 
-    // Nasconde l'anteprima dell'edge-tiling di GNOME mentre mostriamo la nostra
+    // Hide the GNOME edge-tiling preview while showing our own
     _setShellPreviewHidden(hidden) {
         const preview = Main.wm._tilePreview;
         if (!preview)
@@ -202,8 +202,8 @@ export class DragSnap {
         this._overlay.hide();
         this._setShellPreviewHidden(false);
 
-        // In idle: se GNOME ha appena agganciato la finestra a metà schermo o
-        // l'ha massimizzata, la nostra sistemazione deve venire dopo
+        // In idle: if GNOME has just snapped the window to half of the screen or
+        // maximized it, our placement has to come afterwards
         if (this._idleId)
             GLib.source_remove(this._idleId);
         this._idleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
@@ -232,8 +232,8 @@ export class DragSnap {
             return;
         }
 
-        // Trascinata via da una zona: dimensione originale (solo se è rimasta
-        // della misura della zona, cioè GNOME non l'ha agganciata o massimizzata)
+        // Dragged away from a zone: original size (only if it still has the size
+        // of the zone, meaning GNOME hasn't snapped or maximized it)
         if (!drag.wasSnapped || !this._settings.get_boolean('restore-size-on-drag'))
             return;
         const rect = window.get_frame_rect();

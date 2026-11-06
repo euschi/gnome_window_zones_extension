@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // SPDX-FileCopyrightText: 2026 Eugenio Schintu
 
-// Modello dei layout, in JavaScript puro: lo usano sia l'estensione sia le
-// preferenze (che girano in un processo GTK separato e non possono importare
-// i moduli della Shell).
+// Layout model, in plain JavaScript: used by both the extension and the
+// preferences (which run in a separate GTK process and can't import the Shell
+// modules).
 //
-// Un layout è un albero di divisioni:
+// A layout is a tree of splits:
 //   {id, name, root: node}
 //   node = {zone: true}
-//        | {dir: 'cols'|'rows', sizes: [frazioni], children: [node, ...]}
-// 'cols' affianca i figli da sinistra a destra, 'rows' li impila dall'alto in
-// basso. Le zone sono numerate nell'ordine di visita in profondità.
+//        | {dir: 'cols'|'rows', sizes: [fractions], children: [node, ...]}
+// 'cols' places the children side by side from left to right, 'rows' stacks
+// them from top to bottom. Zones are numbered in depth-first visit order.
 
-// Marca le stringhe per xgettext senza tradurle qui: la traduzione avviene
-// dove vengono mostrate.
+// Mark strings for xgettext without translating them here: the translation
+// happens where they are displayed.
 const N_ = s => s;
 
 export const MIN_SIZE = 0.05;
@@ -47,7 +47,7 @@ export const BUILTIN_LAYOUTS = [
 
 const BUILTIN_IDS = new Set(BUILTIN_LAYOUTS.map(l => l.id));
 
-// Rettangoli delle zone in frazioni del rettangolo dato (default: tutta l'area)
+// Zone rectangles as fractions of the given rectangle (default: the whole area)
 export function zonesFromTree(node, rect = {x: 0, y: 0, w: 1, h: 1}, out = []) {
     if (node.zone) {
         out.push({...rect});
@@ -65,7 +65,7 @@ export function zonesFromTree(node, rect = {x: 0, y: 0, w: 1, h: 1}, out = []) {
     return out;
 }
 
-// Rettangoli in pixel delle zone in una miniatura, con `gap` tra una zona e l'altra
+// Zone rectangles in pixels in a thumbnail, with `gap` between one zone and the next
 export function thumbnailRects(root, width, height, gap) {
     return zonesFromTree(root).map(f => ({
         x: Math.round(f.x * width + gap / 2),
@@ -79,7 +79,7 @@ export function countZones(node) {
     return node.zone ? 1 : node.children.reduce((n, c) => n + countZones(c), 0);
 }
 
-// Normalizza un nodo letto da JSON; restituisce null se non è valido
+// Normalize a node read from JSON; return null if it isn't valid
 function sanitizeNode(node, depth = 0) {
     if (!node || typeof node !== 'object' || depth > 16)
         return null;
@@ -149,7 +149,7 @@ export function parseJsonObject(json) {
     }
 }
 
-// Accesso unificato a predefiniti + personalizzati a partire da GSettings
+// Unified access to built-in + custom layouts from GSettings
 export function allLayouts(settings) {
     return [...BUILTIN_LAYOUTS, ...parseCustomLayouts(settings.get_string('custom-layouts'))];
 }
